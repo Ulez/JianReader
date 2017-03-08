@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Reader</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="home">首页</string>
+    <string name="rank">排行</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="catelog">分类</string>
+</resources>

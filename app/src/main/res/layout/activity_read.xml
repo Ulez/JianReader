@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<comulez.github.jianreader.mvc.read.MyScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_read"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".mvc.read.ReadActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_name"
+            style="@style/TextNext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="章节" />
+
+
+        <TextView
+            android:id="@+id/tv_pre1"
+            style="@style/TextNext"
+            android:text="上一章" />
+
+        <TextView
+            android:id="@+id/tv_next1"
+            style="@style/TextNext"
+            android:layout_alignParentEnd="true"
+            android:text="下一章" />
+
+        <comulez.github.jianreader.mvc.activity.ReadView
+            android:id="@+id/wb_read"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_pre1"></comulez.github.jianreader.mvc.activity.ReadView>
+
+
+        <TextView
+            android:id="@+id/tv_night"
+            style="@style/TextNext"
+            android:layout_toLeftOf="@+id/tv_next1"
+            android:textSize="10sp"
+            android:text="day" />
+
+        <TextView
+            android:id="@+id/tv_pre"
+            style="@style/TextNext"
+            android:layout_below="@+id/wb_read"
+            android:text="上一章" />
+
+        <TextView
+            android:id="@+id/tv_next"
+            style="@style/TextNext"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/wb_read"
+            android:text="下一章" />
+    </RelativeLayout>
+</comulez.github.jianreader.mvc.read.MyScrollView>
