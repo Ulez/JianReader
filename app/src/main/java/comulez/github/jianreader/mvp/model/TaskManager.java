@@ -1,17 +1,22 @@
 package comulez.github.jianreader.mvp.model;
 
-/**
- * 从数据层获取的数据，在这里进行拼装和组合
- */
-public class TaskManager {
-    TaskDataSource dataSource;
+import java.util.ArrayList;
 
-    public TaskManager(TaskDataSource dataSource) {
-        this.dataSource = dataSource;
+import comulez.github.jianreader.mvc.bean.Book;
+
+/**
+ * Created by Ulez on 2017/3/8.
+ * Email：lcy1532110757@gmail.com
+ */
+
+public class TaskManager {
+    TaskSource<ArrayList<Book>> taskSource;
+
+    public TaskManager(TaskSource taskSource) {
+        this.taskSource = taskSource;
     }
 
-    public String getShowContent() {
-        //Todo what you want do on the original data
-        return dataSource.getStringFromRemote() + dataSource.getStringFromCache();
+    public ArrayList<Book> getData(String url) {
+        return taskSource.getDataFromServer(url);
     }
 }
