@@ -58,6 +58,7 @@ public class HomePresenter {
 
                     @Override
                     public void onNext(ArrayList<Book> books) {
+                        homeview.onError(null, Constant.status_end);
                         homeview.showList(books);
                     }
                 });
