@@ -1,4 +1,4 @@
-package comulez.github.jianreader.mvp.view;
+package comulez.github.jianreader.mvp.homefragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,7 +22,6 @@ import comulez.github.jianreader.mvc.adapter.BaseAniAdapter;
 import comulez.github.jianreader.mvc.adapter.BookAdapter;
 import comulez.github.jianreader.mvc.adapter.OnItemClickListener;
 import comulez.github.jianreader.mvc.bean.Book;
-import comulez.github.jianreader.mvp.presenter.HomePresenter;
 
 
 public class HomeFragment extends Fragment implements HomeView {
@@ -64,12 +63,12 @@ public class HomeFragment extends Fragment implements HomeView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rvBooks = (RecyclerView) inflater.inflate(R.layout.rvbook, container, false);
-        loadDatas();
+        loadData();
         return rvBooks;
     }
 
 
-    public void loadDatas() {
+    public void loadData() {
         presenter = new HomePresenter();
         presenter.addTaskListener(this);
         presenter.getData(Api.base_url);

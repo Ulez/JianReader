@@ -21,7 +21,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import comulez.github.jianreader.R;
-import comulez.github.jianreader.mvp.view.HomeFragment;
+import comulez.github.jianreader.mvp.homefragment.HomeFragment;
 
 public class Main2Activity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener {
