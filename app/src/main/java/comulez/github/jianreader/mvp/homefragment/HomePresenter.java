@@ -1,11 +1,11 @@
 package comulez.github.jianreader.mvp.homefragment;
 
+import android.os.SystemClock;
+
 import java.util.ArrayList;
 
 import comulez.github.jianreader.mvc.activity.Constant;
 import comulez.github.jianreader.mvc.bean.Book;
-import comulez.github.jianreader.mvp.model.TaskManager;
-import comulez.github.jianreader.mvp.model.TaskSourceImpl;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -39,6 +39,7 @@ public class HomePresenter {
                 .map(new Func1<String, ArrayList<Book>>() {
                     @Override
                     public ArrayList<Book> call(String url) {
+                        SystemClock.sleep(2000);
                         return taskManager.getData(url);
                     }
                 })

@@ -1,4 +1,4 @@
-package comulez.github.jianreader.mvp.model;
+package comulez.github.jianreader.mvp.homefragment;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import comulez.github.jianreader.mvc.bean.Book;
+import comulez.github.jianreader.mvp.model.TaskSource;
 
 /**
  * Created by Ulez on 2017/3/8.

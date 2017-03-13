@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import comulez.github.jianreader.R;
 import comulez.github.jianreader.mvc.bean.Book;
+import comulez.github.jianreader.mvp.EmptyLayout;
 
 /**
  * Created by Ulez on 2017/2/23.
@@ -21,11 +22,20 @@ import comulez.github.jianreader.mvc.bean.Book;
  */
 
 public class BookAdapter extends BaseAniAdapter<RecyclerView.ViewHolder> {
+    public static final int Type_empty = 221;
     Context context;
     ArrayList<Book> bookList;
     private OnItemClickListener<Book> onItemClickListener;
+    private OnEmptyClickListener onEmptyClickListener;
+
+    public void setOnEmptyClickListener(OnEmptyClickListener onEmptyClickListener) {
+        this.onEmptyClickListener = onEmptyClickListener;
+    }
+
     private OnItemLongClickListener<Book> onItemLongClickListener;
     private String TAG = "BookAdapter";
+    private int emId;
+    private int emType;
 
     public void setOnItemClickListener(OnItemClickListener<Book> onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
@@ -44,6 +54,8 @@ public class BookAdapter extends BaseAniAdapter<RecyclerView.ViewHolder> {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
+            case Type_empty:
+                return new EmptyHolder(LayoutInflater.from(context).inflate(R.layout.em_layout, parent, false));
             case Book.Type_Hot:
                 return new HotHolder(LayoutInflater.from(context).inflate(R.layout.item_hot_book, parent, false));
             case Book.Type_sort:
@@ -55,6 +67,8 @@ public class BookAdapter extends BaseAniAdapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
+        if (showEmpty)
+            return Type_empty;
         return bookList.get(position).getType();
     }
 
@@ -73,6 +87,8 @@ public class BookAdapter extends BaseAniAdapter<RecyclerView.ViewHolder> {
             case Book.Type_sort:
                 ((SortHolder) holder).sort.setText(bookList.get(position).getName().replace("更多...", ""));
                 break;
+            case Type_empty:
+                break;
             default:
                 ((BookHolder) holder).bookName.setText(bookList.get(position).getName());
                 ((BookHolder) holder).author.setText(bookList.get(position).getAuthor());
@@ -83,6 +99,8 @@ public class BookAdapter extends BaseAniAdapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
+        if (showEmpty)
+            return 1;
         return bookList.size();
     }
 
@@ -95,6 +113,52 @@ public class BookAdapter extends BaseAniAdapter<RecyclerView.ViewHolder> {
 
     public void clearData() {
         bookList.clear();
+    }
+
+    public void setData(ArrayList<Book> books) {
+        this.bookList = books;
+        setShowAni(true);
+        notifyItemRangeInserted(0, bookList.size());
+    }
+
+    public void setEmptyView(int layout_id, int statusType) {
+        if (statusType == EmptyLayout.HIDE_LAYOUT) {
+            this.emId = layout_id;
+            this.emType = statusType;
+            showEmpty = false;
+            notifyDataSetChanged();
+        } else {
+            this.emId = layout_id;
+            this.emType = statusType;
+            showEmpty = true;
+            bookList.clear();
+            notifyDataSetChanged();
+        }
+    }
+
+    public class EmptyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        public EmptyHolder(View itemView) {
+            super(itemView);
+            if (itemView instanceof EmptyLayout) {
+                ((EmptyLayout) itemView).setErrorType(emType);
+                ((EmptyLayout) itemView).setOnLayoutClickListener(this);
+            }
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (onEmptyClickListener != null) {
+                onEmptyClickListener.onEmptyClick();
+            }
+        }
+    }
+
+    @Override
+    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        if (bookList != null && bookList.size() > 0 && lastPos == bookList.size() - 1)
+            setShowAni(false);
     }
 
     public class BookHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {

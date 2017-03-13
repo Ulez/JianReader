@@ -22,6 +22,7 @@ import comulez.github.jianreader.mvc.adapter.BaseAniAdapter;
 import comulez.github.jianreader.mvc.adapter.BookAdapter;
 import comulez.github.jianreader.mvc.adapter.OnItemClickListener;
 import comulez.github.jianreader.mvc.bean.Book;
+import comulez.github.jianreader.mvp.EmptyLayout;
 
 
 public class HomeFragment extends Fragment implements HomeView {
@@ -69,13 +70,6 @@ public class HomeFragment extends Fragment implements HomeView {
 
 
     public void loadData() {
-        presenter = new HomePresenter();
-        presenter.addTaskListener(this);
-        presenter.getData(Api.base_url);
-    }
-
-    @Override
-    public void showList(ArrayList<Book> books) {
         rvBooks.setLayoutManager(new LinearLayoutManager(activity));
         bookAdapter = new BookAdapter(activity, books);
         rvBooks.setAdapter(bookAdapter);
@@ -90,18 +84,30 @@ public class HomeFragment extends Fragment implements HomeView {
                 activity.startActivity(intent);
             }
         });
+
+        presenter = new HomePresenter();
+        presenter.addTaskListener(this);
+        presenter.getData(Api.base_url);
+    }
+
+    @Override
+    public void showList(ArrayList<Book> books) {
+        bookAdapter.setData(books);
     }
 
     @Override
     public void onError(Throwable e, int Status) {
         switch (Status) {
             case Constant.status_loading:
+                bookAdapter.setEmptyView(R.layout.em_layout, EmptyLayout.NETWORK_LOADING);
                 Toast.makeText(activity, "status_loading", Toast.LENGTH_SHORT).show();
                 break;
             case Constant.status_no_data:
+                bookAdapter.setEmptyView(R.layout.em_layout, EmptyLayout.NODATA);
                 Toast.makeText(activity, "status_no_data", Toast.LENGTH_SHORT).show();
                 break;
             default://
+                bookAdapter.setEmptyView(R.layout.em_layout, EmptyLayout.HIDE_LAYOUT);
                 Toast.makeText(activity, "default", Toast.LENGTH_SHORT).show();
                 break;
         }
