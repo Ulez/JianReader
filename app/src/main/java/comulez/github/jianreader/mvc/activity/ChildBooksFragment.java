@@ -86,6 +86,31 @@ public class ChildBooksFragment extends Fragment {
             rankBean = getArguments().getParcelable(ARG_BEAN);
         }
         url = Api.base_url + rankBean.getUrl();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        rvBooks = (RecyclerView) inflater.inflate(R.layout.rvbook, container, false);
+        return rvBooks;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            handler = new Handler() {
+                @Override
+                public void handleMessage(Message msg) {
+                    setList();
+                }
+            };
+            getDataFromServer(); // 在此请求数据
+        }
+    }
+
+
+    private void getDataFromServer() {
         runnable = new Runnable() {
             @Override
             public void run() {
@@ -99,23 +124,6 @@ public class ChildBooksFragment extends Fragment {
                 }
             }
         };
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        rvBooks = (RecyclerView) inflater.inflate(R.layout.rvbook, container, false);
-        handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                setList();
-            }
-        };
-        getDataaaaa();
-        return rvBooks;
-    }
-
-    private void getDataaaaa() {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(runnable);
     }
@@ -144,7 +152,7 @@ public class ChildBooksFragment extends Fragment {
                 public void onBottom() {
                     // 到底部自动加载
                     if (!isLoadingData) {
-                        getDataaaaa();
+                        getDataFromServer();
                         isLoadingData = true;
                     }
                 }

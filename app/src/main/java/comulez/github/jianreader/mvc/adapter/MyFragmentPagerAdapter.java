@@ -3,8 +3,6 @@ package comulez.github.jianreader.mvc.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
-import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
@@ -42,16 +40,16 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         return titles.get(position);
     }
-
-    //这个注意要重写；
-    @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-        super.destroyItem(container, position, object);
-        if (position <= getCount()) {
-            FragmentManager manager = ((Fragment) object).getFragmentManager();
-            FragmentTransaction trans = manager.beginTransaction();
-            trans.remove((Fragment) object);
-            trans.commit();
-        }
-    }
+//
+//    //这个注意要重写；
+//    @Override
+//    public void destroyItem(ViewGroup container, int position, Object object) {
+//        super.destroyItem(container, position, object);
+//        if (position <= getCount()) {
+//            FragmentManager manager = ((Fragment) object).getFragmentManager();
+//            FragmentTransaction trans = manager.beginTransaction();
+//            trans.remove((Fragment) object);
+//            trans.commit();
+//        }
+//    }
 }

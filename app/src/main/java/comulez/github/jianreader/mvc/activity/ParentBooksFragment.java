@@ -101,6 +101,7 @@ public class ParentBooksFragment extends Fragment {
                 pager.setAdapter(adapter);
                 tabLayout.setupWithViewPager(pager);
                 pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+                pager.setOffscreenPageLimit(rankList.size());
             }
         };
         new Thread(new Runnable() {
