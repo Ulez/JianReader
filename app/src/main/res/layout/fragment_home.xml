@@ -4,4 +4,5 @@
     android:layout_height="match_parent"
     android:fadeScrollbars="true"
     android:scrollbarThumbVertical="@drawable/bar_bg"
+    android:scrollbarSize="4dip"
     android:scrollbars="vertical"></android.support.v7.widget.RecyclerView>

@@ -38,6 +38,7 @@
         android:fadeScrollbars="true"
         android:scrollbarThumbVertical="@drawable/bar_bg"
         android:scrollbars="vertical"
+        android:scrollbarSize="4dip"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <android.support.design.widget.FloatingActionButton
