@@ -22,7 +22,7 @@
     <item
         android:id="@+id/browser"
         android:icon="@drawable/ic_menu_camera"
-        android:title="浏览器" />
+        android:title="起点" />
     <item android:title="Communicate">
         <menu>
             <item
