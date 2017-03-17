@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -79,10 +79,17 @@ public class BookAdapter extends BaseAniAdapter<RecyclerView.ViewHolder> {
                 ((HotHolder) holder).bookName.setText(bookList.get(position).getName());
                 ((HotHolder) holder).author.setText(bookList.get(position).getAuthor());
                 ((HotHolder) holder).dec.setText(bookList.get(position).getDec());
-                Glide.with(context)
+
+                Picasso.with(context)
                         .load(bookList.get(position).getImage_url())
-                        .placeholder(R.drawable.defaultmin)
+                        .error(R.drawable.defaultmin)
+                        .fit()
+                        .centerCrop()
                         .into(((HotHolder) holder).cover);
+//                Glide.with(context)
+//                        .load(bookList.get(position).getImage_url())
+//                        .placeholder(R.drawable.defaultmin)
+//                        .into(((HotHolder) holder).cover);
                 break;
             case Book.Type_sort:
                 ((SortHolder) holder).sort.setText(bookList.get(position).getName().replace("更多...", ""));

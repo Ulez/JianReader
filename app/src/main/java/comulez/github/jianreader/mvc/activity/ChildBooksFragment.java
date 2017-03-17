@@ -1,5 +1,6 @@
 package comulez.github.jianreader.mvc.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +15,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -57,7 +57,7 @@ public class ChildBooksFragment extends Fragment {
     // TODO: Customize parameters
     private RankBean rankBean;
     private OnListFragmentInteractionListener mListener;
-    private Context activity;
+    private Activity activity;
     private boolean isLoadingData = false;
     Runnable runnable;
 
@@ -140,11 +140,11 @@ public class ChildBooksFragment extends Fragment {
             bookAdapter.setOnItemClickListener(new OnItemClickListener<Book>() {
                 @Override
                 public void onItemClick(View view, int pos, Book book) {
-                    Toast.makeText(activity, book.getName(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(activity, book.getName(), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(activity, ChapterListActivity.class);
                     intent.putExtra(Constant.PART_URL, book.getUrl());
                     activity.startActivity(intent);
-                    Log.e("lcy", "bookUrl=" + book.getUrl());
+//                    Log.e("lcy", "bookUrl=" + book.getUrl());
                 }
             });
             rvBooks.addOnScrollListener(new OnRcvScrollListener() {

@@ -16,6 +16,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTransitionAni();
         setContentView(getResId());
 //        if (Build.VERSION.SDK_INT >= 21) {
 //            View decorView = getWindow().getDecorView();
@@ -30,6 +31,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 //            actionBar.hide();
         activity = this;
         appContext = this.getApplicationContext();
+    }
+
+    protected void setTransitionAni() {
+
     }
 
     @Override

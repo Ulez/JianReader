@@ -7,9 +7,11 @@ import android.os.Message;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -62,6 +64,7 @@ public class ChapterListActivity extends BaseActivity implements Toolbar.OnMenuI
     private Runnable getDetailTask;
     private int taskCount = 0;
     private ExecutorService executor;
+    public static final String TRANSIT_IMG = "image";
 
     @Override
     public int getResId() {
@@ -79,6 +82,8 @@ public class ChapterListActivity extends BaseActivity implements Toolbar.OnMenuI
         tvName = (TextView) findViewById(R.id.tv_name);
         tvAuthor = (TextView) findViewById(R.id.tv_author);
         wvDec = (WebView) findViewById(R.id.wv_dec);
+
+        ViewCompat.setTransitionName(ivCover, TRANSIT_IMG);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -147,6 +152,16 @@ public class ChapterListActivity extends BaseActivity implements Toolbar.OnMenuI
         };
         executor = Executors.newSingleThreadExecutor();
         originUrl = getIntent().getStringExtra(Constant.PART_URL);
+        if (!TextUtils.isEmpty(getIntent().getStringExtra(Constant.Cover_URL))) {
+            Picasso.with(this)
+                    .load(getIntent().getStringExtra(Constant.Cover_URL))
+                    .error(R.drawable.defaultmin)
+                    .fit()
+                    .centerCrop()
+                    .into(ivCover);
+        } else {
+            ivCover.setImageResource(R.drawable.progressloading);
+        }
         executor.execute(getTask(originUrl));
     }
 
@@ -241,11 +256,14 @@ public class ChapterListActivity extends BaseActivity implements Toolbar.OnMenuI
         wvDec.loadDataWithBaseURL("about:blank", "<font color='white'>" + detail.getIntro(), "text/html", "utf-8", null);
         wvDec.getSettings().setTextZoom(40);
         wvDec.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        Log.e("lcy",detail.getImage_cover());
-        Glide.with(this)
-                .load(detail.getImage_cover())
-                .placeholder(R.drawable.defaultmin)
-                .into(ivCover);
+        if (TextUtils.isEmpty(getIntent().getStringExtra(Constant.Cover_URL))) {
+            Picasso.with(this)
+                    .load(detail.getImage_cover())
+                    .error(R.drawable.defaultmin)
+                    .fit()
+                    .centerCrop()
+                    .into(ivCover);
+        }
     }
 
     @Override

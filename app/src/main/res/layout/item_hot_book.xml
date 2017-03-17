@@ -20,7 +20,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
             android:scaleType="fitXY"
-            android:src="@drawable/defaultmin" />
+            android:transitionName="cover" />
 
         <TextView
             android:id="@+id/wv_dec"
@@ -29,7 +29,6 @@
             android:layout_below="@+id/tv_name"
             android:layout_marginLeft="5dp"
             android:layout_toEndOf="@+id/iv_cover"
-            android:text="简介。。。。。。"
             android:textSize="10sp" />
 
         <TextView
@@ -39,8 +38,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
             android:layout_toEndOf="@+id/iv_cover"
-            android:text="斗破苍穹"
-            android:textSize="11sp" />
+            android:textSize="11sp"
+            android:transitionName="bookname" />
 
         <TextView
             android:id="@+id/tv_author"
@@ -49,7 +48,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_margin="5dp"
-            android:text="作者：天蚕土豆"
-            android:textSize="8sp" />
+            android:textSize="8sp"
+            android:transitionName="author" />
     </RelativeLayout>
 </android.support.v7.widget.CardView>

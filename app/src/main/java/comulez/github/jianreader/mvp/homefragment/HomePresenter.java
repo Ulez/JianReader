@@ -39,7 +39,7 @@ public class HomePresenter {
                 .map(new Func1<String, ArrayList<Book>>() {
                     @Override
                     public ArrayList<Book> call(String url) {
-                        SystemClock.sleep(2000);
+                        SystemClock.sleep(20);
                         return taskManager.getData(url);
                     }
                 })

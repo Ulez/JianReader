@@ -2,6 +2,8 @@ package comulez.github.jianreader.mvp.homefragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -78,16 +79,29 @@ public class HomeFragment extends Fragment implements HomeView {
         bookAdapter.setOnItemClickListener(new OnItemClickListener<Book>() {
             @Override
             public void onItemClick(View view, int pos, Book book) {
-                Toast.makeText(activity, book.getName(), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(activity, ChapterListActivity.class);
-                intent.putExtra(Constant.PART_URL, book.getUrl());
-                activity.startActivity(intent);
+                startChapterActivity(view, pos, book);
+//                Toast.makeText(activity, book.getName(), Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(activity, ChapterListActivity.class);
+//                intent.putExtra(Constant.PART_URL, book.getUrl());
+//                activity.startActivity(intent);
             }
         });
 
         presenter = new HomePresenter();
         presenter.addTaskListener(this);
         presenter.getData(Api.base_url);
+    }
+
+    private void startChapterActivity(View view, int pos, Book book) {
+        Intent intent = new Intent(activity, ChapterListActivity.class);
+        intent.putExtra(Constant.PART_URL, book.getUrl());
+        if (book.getType() == Book.Type_Hot) {
+            intent.putExtra(Constant.Cover_URL, book.getImage_url());
+            ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, view.findViewById(R.id.iv_cover), ChapterListActivity.TRANSIT_IMG);
+            ActivityCompat.startActivity(activity, intent, optionsCompat.toBundle());
+        } else {
+            activity.startActivity(intent);
+        }
     }
 
     @Override
@@ -100,15 +114,15 @@ public class HomeFragment extends Fragment implements HomeView {
         switch (Status) {
             case Constant.status_loading:
                 bookAdapter.setEmptyView(R.layout.em_layout, EmptyLayout.NETWORK_LOADING);
-                Toast.makeText(activity, "status_loading", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(activity, "status_loading", Toast.LENGTH_SHORT).show();
                 break;
             case Constant.status_no_data:
                 bookAdapter.setEmptyView(R.layout.em_layout, EmptyLayout.NODATA);
-                Toast.makeText(activity, "status_no_data", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(activity, "status_no_data", Toast.LENGTH_SHORT).show();
                 break;
             default://
                 bookAdapter.setEmptyView(R.layout.em_layout, EmptyLayout.HIDE_LAYOUT);
-                Toast.makeText(activity, "default", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(activity, "default", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
