@@ -43,6 +43,34 @@ public class BookDetail {
         this.image_cover = image_cover;
     }
 
+    public String getBookName() {
+        return bookName;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getUp_date() {
+        return up_date;
+    }
+
+    public String getLatestChapter() {
+        return latestChapter;
+    }
+
+    public String getLatestUrl() {
+        return latestUrl;
+    }
+
     public void setBookName(String bookName) {
         this.bookName = bookName;
     }

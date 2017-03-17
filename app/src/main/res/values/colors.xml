@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="read_bg">#C9BFA6</color>
+    <color name="like">#8fced7</color>
     <!-- Material Design Colors -->
     <color name="md_red_50">#ffffebee</color>
     <color name="md_red_100">#ffffcdd2</color>

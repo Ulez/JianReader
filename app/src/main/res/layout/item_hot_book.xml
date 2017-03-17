@@ -20,10 +20,10 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
             android:scaleType="fitXY"
-            android:src="@drawable/default_cover" />
+            android:src="@drawable/defaultmin" />
 
         <TextView
-            android:id="@+id/tv_dec"
+            android:id="@+id/wv_dec"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_name"

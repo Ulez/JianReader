@@ -81,7 +81,7 @@ public class BookAdapter extends BaseAniAdapter<RecyclerView.ViewHolder> {
                 ((HotHolder) holder).dec.setText(bookList.get(position).getDec());
                 Glide.with(context)
                         .load(bookList.get(position).getImage_url())
-                        .placeholder(R.drawable.default_cover)
+                        .placeholder(R.drawable.defaultmin)
                         .into(((HotHolder) holder).cover);
                 break;
             case Book.Type_sort:
@@ -201,7 +201,7 @@ public class BookAdapter extends BaseAniAdapter<RecyclerView.ViewHolder> {
             bookName = (TextView) itemView.findViewById(R.id.tv_name);
             author = (TextView) itemView.findViewById(R.id.tv_author);
             cover = (ImageView) itemView.findViewById(R.id.iv_cover);
-            dec = (TextView) itemView.findViewById(R.id.tv_dec);
+            dec = (TextView) itemView.findViewById(R.id.wv_dec);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }
