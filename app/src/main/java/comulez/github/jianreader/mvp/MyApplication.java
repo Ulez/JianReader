@@ -3,6 +3,8 @@ package comulez.github.jianreader.mvp;
 import android.app.Application;
 import android.content.Context;
 
+import com.squareup.leakcanary.LeakCanary;
+
 /**
  * Created by eado on 2017/3/10.
  */
@@ -15,6 +17,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
+        LeakCanary.install(this);
     }
 
     @Override
