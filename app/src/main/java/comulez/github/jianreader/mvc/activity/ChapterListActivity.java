@@ -94,24 +94,10 @@ public class ChapterListActivity extends BaseActivity implements Toolbar.OnMenuI
         app_bar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (verticalOffset == 0) {
-                    if (state != CollapsingToolbarLayoutState.EXPANDED) {
-                        state = CollapsingToolbarLayoutState.EXPANDED;//修改状态标记为展开
-                        getSupportActionBar().setTitle(getString(R.string.back));
-//                        collapsingToolbarLayout.setTitle("斗破苍穹");//设置title为EXPANDED
-                    }
-                } else if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
-                    if (state != CollapsingToolbarLayoutState.COLLAPSED) {
-                        getSupportActionBar().setTitle(detail.getBookName());
-//                        collapsingToolbarLayout.setTitle("斗破苍穹");
-                        state = CollapsingToolbarLayoutState.COLLAPSED;//修改状态标记为折叠
-                    }
-                } else {
-                    if (state != CollapsingToolbarLayoutState.INTERNEDIATE) {
-                        if (state == CollapsingToolbarLayoutState.COLLAPSED) {
-                        }
-                        state = CollapsingToolbarLayoutState.INTERNEDIATE;//修改状态标记为中间
-                    }
+                try {
+                    setToobar(appBarLayout, verticalOffset);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -163,6 +149,28 @@ public class ChapterListActivity extends BaseActivity implements Toolbar.OnMenuI
             ivCover.setImageResource(R.drawable.progressloading);
         }
         executor.execute(getTask(originUrl));
+    }
+
+    private void setToobar(AppBarLayout appBarLayout, int verticalOffset) {
+        if (verticalOffset == 0) {
+            if (state != CollapsingToolbarLayoutState.EXPANDED) {
+                state = CollapsingToolbarLayoutState.EXPANDED;//修改状态标记为展开
+                getSupportActionBar().setTitle(getString(R.string.back));
+//                        collapsingToolbarLayout.setTitle("斗破苍穹");//设置title为EXPANDED
+            }
+        } else if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
+            if (state != CollapsingToolbarLayoutState.COLLAPSED) {
+                getSupportActionBar().setTitle(detail.getBookName());
+//                        collapsingToolbarLayout.setTitle("斗破苍穹");
+                state = CollapsingToolbarLayoutState.COLLAPSED;//修改状态标记为折叠
+            }
+        } else {
+            if (state != CollapsingToolbarLayoutState.INTERNEDIATE) {
+                if (state == CollapsingToolbarLayoutState.COLLAPSED) {
+                }
+                state = CollapsingToolbarLayoutState.INTERNEDIATE;//修改状态标记为中间
+            }
+        }
     }
 
     @Override

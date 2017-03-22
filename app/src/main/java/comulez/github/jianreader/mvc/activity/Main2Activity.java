@@ -16,9 +16,13 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import java.util.HashMap;
+import java.util.HashSet;
 
 import comulez.github.jianreader.R;
 import comulez.github.jianreader.mvp.homefragment.HomeFragment;
@@ -67,6 +71,9 @@ public class Main2Activity extends BaseActivity
                 canExit = false;
             }
         };
+        SparseArray a;
+        HashMap map=new HashMap();
+        HashSet set=new HashSet();
     }
 
     private boolean canExit = false;

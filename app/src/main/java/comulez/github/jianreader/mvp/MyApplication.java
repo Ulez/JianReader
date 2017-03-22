@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.squareup.leakcanary.LeakCanary;
+import com.tencent.bugly.crashreport.CrashReport;
 
 /**
  * Created by eado on 2017/3/10.
@@ -18,6 +19,7 @@ public class MyApplication extends Application {
         super.onCreate();
         context = getApplicationContext();
         LeakCanary.install(this);
+        CrashReport.initCrashReport(getApplicationContext(), "230ec99758", false);
     }
 
     @Override
