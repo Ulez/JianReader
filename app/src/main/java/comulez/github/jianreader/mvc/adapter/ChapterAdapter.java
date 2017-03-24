@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import comulez.github.jianreader.R;
 import comulez.github.jianreader.mvc.bean.Chapter;
@@ -54,6 +55,11 @@ public class ChapterAdapter extends BaseAniAdapter<ChapterAdapter.ChapterHolder>
     @Override
     public int getItemCount() {
         return chapterList.size();
+    }
+
+    public void reverseChapters(){
+        Collections.reverse(chapterList);
+        this.notifyDataSetChanged();
     }
 
     public class ChapterHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {

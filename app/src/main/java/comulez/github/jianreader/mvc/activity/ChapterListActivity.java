@@ -65,6 +65,11 @@ public class ChapterListActivity extends BaseActivity implements Toolbar.OnMenuI
     private int taskCount = 0;
     private ExecutorService executor;
     public static final String TRANSIT_IMG = "image";
+    private TextView tvType;
+    private TextView tvStatus;
+    private TextView tvLastChapter;
+    private TextView tvLastupdate;
+    private ChapterAdapter chapterAdapter;
 
     @Override
     public int getResId() {
@@ -81,6 +86,12 @@ public class ChapterListActivity extends BaseActivity implements Toolbar.OnMenuI
         ivCover = (ImageView) findViewById(R.id.iv_cover);
         tvName = (TextView) findViewById(R.id.tv_name);
         tvAuthor = (TextView) findViewById(R.id.tv_author);
+
+        tvType = (TextView) findViewById(R.id.tv_type);
+        tvStatus = (TextView) findViewById(R.id.tv_status);
+        tvLastChapter = (TextView) findViewById(R.id.tv_lastChapter);
+        tvLastupdate = (TextView) findViewById(R.id.tv_lastupdate);
+
         wvDec = (WebView) findViewById(R.id.wv_dec);
 
         ViewCompat.setTransitionName(ivCover, TRANSIT_IMG);
@@ -104,10 +115,11 @@ public class ChapterListActivity extends BaseActivity implements Toolbar.OnMenuI
         fb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (top)
-                    recyclerView.scrollToPosition(chapterList.size() - 1);
-                else
-                    recyclerView.scrollToPosition(0);
+                chapterAdapter.reverseChapters();
+//                if (top)
+//                    recyclerView.scrollToPosition(chapterList.size() - 1);
+//                else
+//                    recyclerView.scrollToPosition(0);
                 top = !top;
             }
         });
@@ -116,11 +128,11 @@ public class ChapterListActivity extends BaseActivity implements Toolbar.OnMenuI
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case Type_Chapters:
-                        ChapterAdapter adapter = new ChapterAdapter(activity, chapterList);
+                        chapterAdapter = new ChapterAdapter(activity, chapterList);
                         manager = new LinearLayoutManager(activity);
                         recyclerView.setLayoutManager(manager);
-                        recyclerView.setAdapter(adapter);
-                        adapter.setOnItemClickListener(new OnItemClickListener<Chapter>() {
+                        recyclerView.setAdapter(chapterAdapter);
+                        chapterAdapter.setOnItemClickListener(new OnItemClickListener<Chapter>() {
                             @Override
                             public void onItemClick(View view, int pos, Chapter chapter) {
                                 Log.e(TAG, chapter.getName() + ":" + originUrl + chapter.getUrl());
@@ -254,12 +266,11 @@ public class ChapterListActivity extends BaseActivity implements Toolbar.OnMenuI
     private void setDetails() {
         tvName.setText(detail.getBookName());
         tvAuthor.setText(detail.getAuthor());
-        detail.getLatestChapter();
+        tvLastChapter.setText(detail.getLatestChapter());
+        tvStatus.setText(detail.getStatus());
+        tvType.setText(detail.getType());
+        tvLastupdate.setText(detail.getUp_date());
         detail.getLatestUrl();
-        detail.getStatus();
-        detail.getType();
-        detail.getUp_date();
-
 
         wvDec.loadDataWithBaseURL("about:blank", "<font color='white'>" + detail.getIntro(), "text/html", "utf-8", null);
         wvDec.getSettings().setTextZoom(40);

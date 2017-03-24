@@ -3,7 +3,6 @@ package comulez.github.jianreader.mvc.adapter;
 
 import android.animation.ObjectAnimator;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import comulez.github.jianreader.mvc.bean.Book;
 
@@ -46,7 +45,7 @@ public abstract class BaseAniAdapter<T extends RecyclerView.ViewHolder> extends 
     public void onViewAttachedToWindow(T holder) {
         super.onViewAttachedToWindow(holder);
 
-        Log.e("lcy", "lastPos=" + lastPos + ",,holder.getAdapterPosition()=" + holder.getAdapterPosition());
+//        Log.e("lcy", "lastPos=" + lastPos + ",,holder.getAdapterPosition()=" + holder.getAdapterPosition());
 
         if (showAni && !showEmpty && holder.getAdapterPosition() >= lastPos) {
             switch (aniType) {
