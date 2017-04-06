@@ -1,4 +1,4 @@
-package comulez.github.jianreader.mvp;
+package comulez.github.jianreader.mvp.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,6 +9,7 @@ import android.util.Log;
 import java.io.File;
 
 import comulez.github.jianreader.mvc.activity.Constant;
+import comulez.github.jianreader.mvp.MyApplication;
 
 import static comulez.github.jianreader.mvc.activity.Constant.TABLE_NAME;
 
@@ -43,13 +44,20 @@ public class CacheDao {
         return mInstance;
     }
 
-    public void addCache(String url, String pwd, String Sessionid) {
+    /**
+     * @param name
+     * @param url
+     * @param nextUrl
+     * @param preUrl
+     */
+    public void addCache(String name, String url, String nextUrl, String preUrl) {
         SQLiteDatabase database = helper.getReadableDatabase();
         ContentValues values = new ContentValues();
+        values.put(Constant.CHAPTER_NAME, name);
         values.put(Constant.URL, url);
-        values.put(Constant.PATH, pwd);
-        values.put(Constant.SAVE_TIME, Sessionid);
-        long insert = database.insert(TABLE_NAME, null, values);
+        values.put(Constant.NEXT_URL, nextUrl);
+        values.put(Constant.PRE_URL, preUrl);
+        long insert = database.insert(Constant.TABLE_CHAPTER_LIST, null, values);
         Log.e(TAG, "url=" + url + ",insert:" + insert);
         database.close();
     }

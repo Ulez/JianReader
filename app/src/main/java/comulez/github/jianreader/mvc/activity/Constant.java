@@ -16,8 +16,12 @@ public class Constant {
     public static final int VERSION = 1;
     public static final String DBNAME = "book.db";
     public static final String TABLE_NAME="app_doc";
+    public static final String TABLE_CHAPTER_LIST="chapter_list";
     public static String ID="id";
-    public static String URL ="URL";
-    public static String PATH ="PATH";
-    public static String SAVE_TIME ="SAVE_TIME";
+    public static String URL ="url";
+    public static String CHAPTER_NAME ="chapter_name";
+    public static String NEXT_URL ="next_url";
+    public static String PRE_URL ="pre_url";
+    public static String PATH ="path";
+    public static String SAVE_TIME ="save_time";
 }

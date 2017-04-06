@@ -18,11 +18,11 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 
-import comulez.github.jianreader.mvc.activity.Api;
-import comulez.github.jianreader.mvc.activity.Constant;
 import comulez.github.jianreader.R;
-import comulez.github.jianreader.mvc.activity.ReadView;
+import comulez.github.jianreader.mvc.activity.Api;
 import comulez.github.jianreader.mvc.activity.BaseActivity;
+import comulez.github.jianreader.mvc.activity.Constant;
+import comulez.github.jianreader.mvc.activity.ReadView;
 
 public class ReadActivity extends BaseActivity implements View.OnClickListener, MyScrollView.OnMove {
 
@@ -78,6 +78,11 @@ public class ReadActivity extends BaseActivity implements View.OnClickListener, 
                 tv_name.setText(name);
                 scrollView.scrollTo(0, 0);
                 clickAble = true;
+//                try {
+//                    CacheManager.getCacheManager().saveChapterCache(url,next_url,pre_url,content,name);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
             }
         };
     }
