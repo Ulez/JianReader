@@ -7,11 +7,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import comulez.github.jianreader.mvc.activity.Constant;
+import comulez.github.jianreader.mvc.bean.UrlBean;
 import comulez.github.jianreader.mvp.MyApplication;
 
-import static comulez.github.jianreader.mvc.activity.Constant.TABLE_NAME;
+import static comulez.github.jianreader.mvc.activity.Constant.CHAPTER_TABLE;
 
 
 /**
@@ -65,27 +68,27 @@ public class CacheDao {
 
     public void deleteCache(String url) {
         SQLiteDatabase database = helper.getReadableDatabase();
-        int delete = database.delete(TABLE_NAME, "url=?", new String[]{url});
+        int delete = database.delete(CHAPTER_TABLE, "url=?", new String[]{url});
         Log.e(TAG, "url" + url + "url:" + delete);
         database.close();
     }
 
     public void updateCache(String url, String pwd, String Sessionid) {
 //        String sql = "UPDATE app_Cache SET " + url + " =" + " " + "'" + pwd + "'" + " WHERE url =" + "'" + url + "'";
-        String sql = "update " + TABLE_NAME + " set pwd='" + pwd + "',Sessionid='" + Sessionid + "' WHERE url ='" + url + "'";
+        String sql = "update " + CHAPTER_TABLE + " set pwd='" + pwd + "',Sessionid='" + Sessionid + "' WHERE url ='" + url + "'";
         ExecSQL(sql);
         Log.i(TAG, sql);
     }
 
     public void updateCache(String url, String pwd) {
-        String sql = "update " + TABLE_NAME + " set pwd='" + pwd + "' WHERE url ='" + url + "'";
+        String sql = "update " + CHAPTER_TABLE + " set pwd='" + pwd + "' WHERE url ='" + url + "'";
         ExecSQL(sql);
         Log.i(TAG, sql);
     }
 
 
     public void updateCacheSid(String url, String Sessionid) {
-        String sql = "update " + TABLE_NAME + " set Sessionid='" + Sessionid + "' WHERE url ='" + url + "'";
+        String sql = "update " + CHAPTER_TABLE + " set Sessionid='" + Sessionid + "' WHERE url ='" + url + "'";
         ExecSQL(sql);
         Log.i(TAG, sql);
     }
@@ -106,7 +109,7 @@ public class CacheDao {
     public boolean hasCache(String url) {
         int i = 0;
         SQLiteDatabase database = helper.getReadableDatabase();
-        Cursor cursor = database.rawQuery("select * from " + Constant.TABLE_NAME + " WHERE url ='" + url + "'", null);
+        Cursor cursor = database.rawQuery("select * from " + Constant.CHAPTER_TABLE + " WHERE url ='" + url + "'", null);
         while (cursor.moveToNext()) {
             i++;
         }
@@ -119,7 +122,7 @@ public class CacheDao {
      * 清空数据
      */
     public void clearData() {
-        ExecSQL("DELETE FROM " + TABLE_NAME);
+        ExecSQL("DELETE FROM " + CHAPTER_TABLE);
         Log.i("LCY", "clear data");
     }
 
@@ -136,4 +139,24 @@ public class CacheDao {
         return failure;
     }
 
+    public UrlBean getUrlCache(String url) {//返回所有的用户名；
+        List<UrlBean> list = new ArrayList<>();
+        SQLiteDatabase database = helper.getReadableDatabase();
+        Cursor cursor = database.rawQuery("select " +
+                Constant.URL +
+                ", " +
+                Constant.NEXT_URL +
+                ", " +
+                Constant.PRE_URL +
+                " from " + Constant.CHAPTER_NAME + " where url = '" + url + "'", null);
+        while (cursor.moveToNext()) {
+            list.add(new UrlBean(cursor.getString(0), cursor.getString(1), cursor.getString(2)));
+        }
+        cursor.close();
+        database.close();
+        Log.e(TAG, "list==" + list.toString());
+        if (list.size() > 0)
+            return list.get(0);
+        else return null;
+    }
 }

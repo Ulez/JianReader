@@ -23,6 +23,8 @@ import comulez.github.jianreader.mvc.activity.Api;
 import comulez.github.jianreader.mvc.activity.BaseActivity;
 import comulez.github.jianreader.mvc.activity.Constant;
 import comulez.github.jianreader.mvc.activity.ReadView;
+import comulez.github.jianreader.mvc.bean.UrlBean;
+import comulez.github.jianreader.mvp.utils.CacheManager;
 
 public class ReadActivity extends BaseActivity implements View.OnClickListener, MyScrollView.OnMove {
 
@@ -79,7 +81,7 @@ public class ReadActivity extends BaseActivity implements View.OnClickListener, 
                 scrollView.scrollTo(0, 0);
                 clickAble = true;
 //                try {
-//                    CacheManager.getCacheManager().saveChapterCache(url,next_url,pre_url,content,name);
+//                    getCacheManager().saveChapterCache(url, next_url, pre_url, content, name);
 //                } catch (IOException e) {
 //                    e.printStackTrace();
 //                }
@@ -98,16 +100,25 @@ public class ReadActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     private void GetChapterContent() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    getData(url);
-                } catch (IOException e) {
-                    e.printStackTrace();
+        String content = CacheManager.getCacheManager().getChapterContent(url);
+        if (content == null)
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        getData(url);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
+            }).start();
+        else {
+            UrlBean urlBean = CacheManager.getCacheManager().getUrlNear(url);
+            if (urlBean != null) {
+                pre_url = urlBean.getPre_url();
+                next_url = urlBean.getNext_url();
             }
-        }).start();
+        }
     }
 
     private void getData(String url) throws IOException {
