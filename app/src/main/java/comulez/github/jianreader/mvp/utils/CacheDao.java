@@ -139,7 +139,7 @@ public class CacheDao {
         return failure;
     }
 
-    public UrlBean getUrlCache(String url) {//返回所有的用户名；
+    public UrlBean getUrlCache(String url) {
         List<UrlBean> list = new ArrayList<>();
         SQLiteDatabase database = helper.getReadableDatabase();
         Cursor cursor = database.rawQuery("select " +

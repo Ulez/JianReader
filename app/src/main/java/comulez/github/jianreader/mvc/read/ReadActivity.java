@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -101,7 +102,7 @@ public class ReadActivity extends BaseActivity implements View.OnClickListener, 
 
     private void GetChapterContent() {
         String content = CacheManager.getCacheManager().getChapterContent(url);
-        if (content == null)
+        if (TextUtils.isEmpty(content))
             new Thread(new Runnable() {
                 @Override
                 public void run() {
