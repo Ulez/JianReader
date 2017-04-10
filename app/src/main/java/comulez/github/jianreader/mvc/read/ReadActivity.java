@@ -1,5 +1,6 @@
 package comulez.github.jianreader.mvc.read;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,6 +19,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 
 import comulez.github.jianreader.R;
 import comulez.github.jianreader.mvc.activity.Api;
@@ -40,22 +42,7 @@ public class ReadActivity extends BaseActivity implements View.OnClickListener, 
     private TextView tv_night;
 
     MyScrollView scrollView;
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            webView.loadDataWithBaseURL("about:blank", "<font color='" + cloreeee + "'>" + content, "text/html", "utf-8", null);
-            tv_name.setText(name);
-            scrollView.scrollTo(0, 0);
-            clickAble = true;
-            switch (msg.what) {
-                case 1:
-                    break;
-                case 2:
-                    CacheManager.getCacheManager().saveChapterCache(url, next_url, pre_url, content, name, bookName);
-                    break;
-            }
-        }
-    };
+    private Handler handler;
     private String content;
     private String name;
     private String pre_url;
@@ -71,6 +58,22 @@ public class ReadActivity extends BaseActivity implements View.OnClickListener, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStatusColor(R.color.md_black);
+        handler = new MyHandler(this) {
+            @Override
+            public void handleMessage2(Message msg) {
+                webView.loadDataWithBaseURL("about:blank", "<font color='" + cloreeee + "'>" + content, "text/html", "utf-8", null);
+                tv_name.setText(name);
+                scrollView.scrollTo(0, 0);
+                clickAble = true;
+                switch (msg.what) {
+                    case 1:
+                        break;
+                    case 2:
+                        CacheManager.getCacheManager().saveChapterCache(url, next_url, pre_url, content, name, bookName);
+                        break;
+                }
+            }
+        };
         url = getIntent().getStringExtra(Constant.PART_URL);
         bookName = getIntent().getStringExtra(Constant.BOOK_NAME);
 
@@ -245,6 +248,26 @@ public class ReadActivity extends BaseActivity implements View.OnClickListener, 
         if (handler != null) {
             handler.removeCallbacksAndMessages(null);
             handler = null;
+        }
+    }
+
+    private static class MyHandler extends Handler {
+        private WeakReference<Context> reference;
+
+        public MyHandler(Context context) {
+            reference = new WeakReference<>(context);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            ReadActivity activity = (ReadActivity) reference.get();
+            if (activity != null) {
+                handleMessage2(msg);
+            }
+        }
+
+        public void handleMessage2(Message msg) {
+
         }
     }
 }
