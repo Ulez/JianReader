@@ -7,11 +7,31 @@ package comulez.github.jianreader.mvc.bean;
 
 
 public class UrlBean {
+    private String bookName;
+    private String chapterName;
     private String url;
     private String next_url;
     private String pre_url;
 
-    public UrlBean(String url, String next_url, String pre_url) {
+    public String getBookName() {
+        return bookName;
+    }
+
+    public void setBookName(String bookName) {
+        this.bookName = bookName;
+    }
+
+    public String getChapterName() {
+        return chapterName;
+    }
+
+    public void setChapterName(String chapterName) {
+        this.chapterName = chapterName;
+    }
+
+    public UrlBean(String bookName, String chapterName, String url, String next_url, String pre_url) {
+        this.bookName = bookName;
+        this.chapterName = chapterName;
         this.url = url;
         this.next_url = next_url;
         this.pre_url = pre_url;

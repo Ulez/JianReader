@@ -138,6 +138,7 @@ public class ChapterListActivity extends BaseActivity implements Toolbar.OnMenuI
                                 Log.e(TAG, chapter.getName() + ":" + originUrl + chapter.getUrl());
                                 Intent intent = new Intent(activity, ReadActivity.class);
                                 intent.putExtra(Constant.PART_URL, originUrl + chapter.getUrl());
+                                intent.putExtra(Constant.BOOK_NAME, tvName.getText().toString());
                                 activity.startActivity(intent);
                             }
                         });

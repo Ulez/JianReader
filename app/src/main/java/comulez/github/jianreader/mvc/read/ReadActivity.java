@@ -27,6 +27,8 @@ import comulez.github.jianreader.mvc.activity.ReadView;
 import comulez.github.jianreader.mvc.bean.UrlBean;
 import comulez.github.jianreader.mvp.utils.CacheManager;
 
+import static comulez.github.jianreader.mvp.utils.CacheManager.getCacheManager;
+
 public class ReadActivity extends BaseActivity implements View.OnClickListener, MyScrollView.OnMove {
 
     private ReadView webView;
@@ -38,7 +40,22 @@ public class ReadActivity extends BaseActivity implements View.OnClickListener, 
     private TextView tv_night;
 
     MyScrollView scrollView;
-    private Handler handler;
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            webView.loadDataWithBaseURL("about:blank", "<font color='" + cloreeee + "'>" + content, "text/html", "utf-8", null);
+            tv_name.setText(name);
+            scrollView.scrollTo(0, 0);
+            clickAble = true;
+            switch (msg.what) {
+                case 1:
+                    break;
+                case 2:
+                    CacheManager.getCacheManager().saveChapterCache(url, next_url, pre_url, content, name, bookName);
+                    break;
+            }
+        }
+    };
     private String content;
     private String name;
     private String pre_url;
@@ -48,12 +65,14 @@ public class ReadActivity extends BaseActivity implements View.OnClickListener, 
     private boolean isNight = false;
     private boolean clickAble = true;
     private String cloreeee = "black";
+    private String bookName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStatusColor(R.color.md_black);
         url = getIntent().getStringExtra(Constant.PART_URL);
+        bookName = getIntent().getStringExtra(Constant.BOOK_NAME);
 
         webView = (ReadView) findViewById(R.id.wb_read);
         tv_name = (TextView) findViewById(R.id.tv_name);
@@ -74,20 +93,6 @@ public class ReadActivity extends BaseActivity implements View.OnClickListener, 
         webView.setBackgroundColor(getResources().getColor(R.color.read_bg));
         scrollView.setBackgroundColor(getResources().getColor(R.color.read_bg));
         GetChapterContent();
-        handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                webView.loadDataWithBaseURL("about:blank", "<font color='" + cloreeee + "'>" + content, "text/html", "utf-8", null);
-                tv_name.setText(name);
-                scrollView.scrollTo(0, 0);
-                clickAble = true;
-//                try {
-//                    getCacheManager().saveChapterCache(url, next_url, pre_url, content, name);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-            }
-        };
     }
 
     private void setStatusColor(int color) {
@@ -101,7 +106,7 @@ public class ReadActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     private void GetChapterContent() {
-        String content = CacheManager.getCacheManager().getChapterContent(url);
+        content = CacheManager.getCacheManager().getChapterContent(url);
         if (TextUtils.isEmpty(content))
             new Thread(new Runnable() {
                 @Override
@@ -114,11 +119,13 @@ public class ReadActivity extends BaseActivity implements View.OnClickListener, 
                 }
             }).start();
         else {
-            UrlBean urlBean = CacheManager.getCacheManager().getUrlNear(url);
+            UrlBean urlBean = getCacheManager().getUrlNear(url);
             if (urlBean != null) {
                 pre_url = urlBean.getPre_url();
                 next_url = urlBean.getNext_url();
+                name = urlBean.getChapterName();
             }
+            handler.sendEmptyMessage(1);
         }
     }
 
@@ -133,7 +140,7 @@ public class ReadActivity extends BaseActivity implements View.OnClickListener, 
         next_url = Api.base_url + nextEle.select("a").first().attr("href");
         name = title.select("h1").first().text();
         content = elements.toString();
-        handler.sendEmptyMessage(1);
+        handler.sendEmptyMessage(2);
     }
 
     @Override

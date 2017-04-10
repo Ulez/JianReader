@@ -32,14 +32,19 @@ public class CacheManager {
         novelCacahe = new NovelCache(MyApplication.getContext());
     }
 
-    public boolean saveChapterCache(String url, String next_url, String pre_url, String content, String name) throws IOException {
+    public boolean saveChapterCache(String url, String next_url, String pre_url, String content, String name, String bookName) {
         boolean saved = false;
-        //1.存入到本地文件和缓存；
-        novelCacahe.addToCache(content, Utils.keyFormUrl(url));
-        //2.存入数据库当前章节名，url，文件路径，上一章url，下一章url；
-        cacheDao.addCache(name, url, next_url, pre_url);
-        saved = true;
-        return saved;
+        try {
+            //1.存入到本地文件和缓存；
+            novelCacahe.addToCache(content, Utils.keyFormUrl(url));
+            //2.存入数据库当前章节名，url，文件路径，上一章url，下一章url；
+            cacheDao.addCache(bookName, name, url, next_url, pre_url);
+            saved = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            return saved;
+        }
     }
 
     public String getChapterContent(String url) {

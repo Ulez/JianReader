@@ -5,9 +5,10 @@ import android.os.Environment;
 import android.support.v4.util.LruCache;
 import android.util.Log;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 import static comulez.github.jianreader.mvp.utils.Utils.keyFormUrl;
@@ -94,10 +95,7 @@ public class NovelCache implements INovelCacahe {
             try {
                 DiskLruCache.Snapshot snapShot = diskLruCache.get(key);
                 if (snapShot != null) {
-                    FileInputStream fileInputStream = (FileInputStream) snapShot.getInputStream(DISK_CACHE_INDEX);
-                    if (content != null)
-                        addToCache(content, url);
-                    return content;
+                    return readInStream(snapShot.getInputStream(DISK_CACHE_INDEX));
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -112,5 +110,22 @@ public class NovelCache implements INovelCacahe {
         String key = Utils.keyFormUrl(url);
         addToLruCache(content, key);
         addToDiskCache(content, key);
+    }
+
+    public static String readInStream(InputStream inStream) {
+        try {
+            ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[512];
+            int length = -1;
+            while ((length = inStream.read(buffer)) != -1) {
+                outStream.write(buffer, 0, length);
+            }
+            outStream.close();
+            inStream.close();
+            return outStream.toString();
+        } catch (IOException e) {
+            Log.e("FileTest", e.getMessage());
+        }
+        return null;
     }
 }

@@ -48,19 +48,21 @@ public class CacheDao {
     }
 
     /**
-     * @param name
+     * @param bookName
+     * @param chapterName
      * @param url
      * @param nextUrl
      * @param preUrl
      */
-    public void addCache(String name, String url, String nextUrl, String preUrl) {
+    public void addCache(String bookName, String chapterName, String url, String nextUrl, String preUrl) {
         SQLiteDatabase database = helper.getReadableDatabase();
         ContentValues values = new ContentValues();
-        values.put(Constant.CHAPTER_NAME, name);
+        values.put(Constant.BOOK_NAME, bookName);
+        values.put(Constant.CHAPTER_NAME, chapterName);
         values.put(Constant.URL, url);
         values.put(Constant.NEXT_URL, nextUrl);
         values.put(Constant.PRE_URL, preUrl);
-        long insert = database.insert(Constant.TABLE_CHAPTER_LIST, null, values);
+        long insert = database.insert(Constant.CHAPTER_TABLE, null, values);
         Log.e(TAG, "url=" + url + ",insert:" + insert);
         database.close();
     }
@@ -139,18 +141,28 @@ public class CacheDao {
         return failure;
     }
 
+
+//    values.put(Constant.BOOK_NAME, bookName);
+//    values.put(Constant.CHAPTER_NAME, chapterName);
+//    values.put(Constant.URL, url);
+//    values.put(Constant.NEXT_URL, nextUrl);
+//    values.put(Constant.PRE_URL, preUrl);
     public UrlBean getUrlCache(String url) {
         List<UrlBean> list = new ArrayList<>();
         SQLiteDatabase database = helper.getReadableDatabase();
         Cursor cursor = database.rawQuery("select " +
+                Constant.BOOK_NAME +
+                ", " +
+                Constant.CHAPTER_NAME +
+                ", " +
                 Constant.URL +
                 ", " +
                 Constant.NEXT_URL +
                 ", " +
                 Constant.PRE_URL +
-                " from " + Constant.CHAPTER_NAME + " where url = '" + url + "'", null);
+                " from " + Constant.CHAPTER_TABLE + " where url = '" + url + "'", null);
         while (cursor.moveToNext()) {
-            list.add(new UrlBean(cursor.getString(0), cursor.getString(1), cursor.getString(2)));
+            list.add(new UrlBean(cursor.getString(0), cursor.getString(1), cursor.getString(2),cursor.getString(3), cursor.getString(4)));
         }
         cursor.close();
         database.close();
