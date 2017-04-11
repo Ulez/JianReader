@@ -128,7 +128,7 @@ public class ChapterListActivity extends BaseActivity implements Toolbar.OnMenuI
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case Type_Chapters:
-                        chapterAdapter = new ChapterAdapter(activity, chapterList);
+                        chapterAdapter = new ChapterAdapter(activity, chapterList, originUrl);
                         manager = new LinearLayoutManager(activity);
                         recyclerView.setLayoutManager(manager);
                         recyclerView.setAdapter(chapterAdapter);
@@ -194,6 +194,13 @@ public class ChapterListActivity extends BaseActivity implements Toolbar.OnMenuI
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (chapterAdapter != null)
+            chapterAdapter.notifyDataSetChanged();
     }
 
     private Runnable getTask(final String url) {

@@ -1,9 +1,13 @@
 package comulez.github.jianreader.mvp.utils;
 
+import android.widget.Toast;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import comulez.github.jianreader.mvp.MyApplication;
 
 /**
  * Created by Ulez on 2017/3/30.
@@ -50,5 +54,12 @@ public class Utils {
             sb.append(hex);
         }
         return sb.toString();
+    }
+
+    public static void t(String s){
+        Toast.makeText(MyApplication.getContext(),s,Toast.LENGTH_SHORT).show();
+    }
+    public static void t(int resId){
+        Toast.makeText(MyApplication.getContext(),MyApplication.getContext().getString(resId),Toast.LENGTH_SHORT).show();
     }
 }
