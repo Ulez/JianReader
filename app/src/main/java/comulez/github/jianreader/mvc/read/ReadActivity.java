@@ -28,6 +28,7 @@ import comulez.github.jianreader.mvc.activity.Constant;
 import comulez.github.jianreader.mvc.activity.ReadView;
 import comulez.github.jianreader.mvc.bean.UrlBean;
 import comulez.github.jianreader.mvp.utils.CacheManager;
+import comulez.github.jianreader.mvp.utils.NetWorkUtils;
 
 import static comulez.github.jianreader.mvp.utils.CacheManager.getCacheManager;
 
@@ -110,18 +111,23 @@ public class ReadActivity extends BaseActivity implements View.OnClickListener, 
 
     private void GetChapterContent() {
         content = CacheManager.getCacheManager().getChapterContent(url);
-        if (TextUtils.isEmpty(content))
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        getData(url);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+        if (TextUtils.isEmpty(content)) {
+            if (NetWorkUtils.isNetworkConnected(this))
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            getData(url);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
-            }).start();
-        else {
+                }).start();
+            else {
+                Toast.makeText(this, "无网络连接", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        } else {
             UrlBean urlBean = getCacheManager().getUrlNear(url);
             if (urlBean != null) {
                 pre_url = urlBean.getPre_url();
