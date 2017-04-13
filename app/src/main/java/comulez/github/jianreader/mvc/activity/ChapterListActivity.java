@@ -38,6 +38,7 @@ import comulez.github.jianreader.mvc.adapter.OnItemClickListener;
 import comulez.github.jianreader.mvc.bean.BookDetail;
 import comulez.github.jianreader.mvc.bean.Chapter;
 import comulez.github.jianreader.mvc.read.ReadActivity;
+import comulez.github.jianreader.mvp.utils.CacheDao;
 import comulez.github.jianreader.mvp.utils.Utils;
 
 public class ChapterListActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener {
@@ -74,6 +75,7 @@ public class ChapterListActivity extends BaseActivity implements Toolbar.OnMenuI
     private ImageView ivAdd;
     private boolean added = false;
     private boolean gotDetail = false;
+    private String bookUrl;
 
     @Override
     public int getResId() {
@@ -254,6 +256,7 @@ public class ChapterListActivity extends BaseActivity implements Toolbar.OnMenuI
             };
             return getChapterTask;
         } else { //http://m.23us.com/book/58177;
+            bookUrl = url;
             getDetailTask = new Runnable() {
 
                 @Override

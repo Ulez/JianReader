@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import comulez.github.jianreader.mvc.activity.Constant;
+import comulez.github.jianreader.mvc.bean.BookDetail;
 import comulez.github.jianreader.mvc.bean.UrlBean;
 import comulez.github.jianreader.mvp.MyApplication;
 
@@ -59,7 +60,7 @@ public class CacheDao {
         ContentValues values = new ContentValues();
         values.put(Constant.BOOK_NAME, bookName);
         values.put(Constant.CHAPTER_NAME, chapterName);
-        values.put(Constant.URL, url);
+        values.put(Constant.CHAPTER_URL, url);
         values.put(Constant.NEXT_URL, nextUrl);
         values.put(Constant.PRE_URL, preUrl);
         long insert = database.insert(Constant.CHAPTER_TABLE, null, values);
@@ -142,9 +143,9 @@ public class CacheDao {
     }
 
 
-//    values.put(Constant.BOOK_NAME, bookName);
+    //    values.put(Constant.BOOK_NAME, bookName);
 //    values.put(Constant.CHAPTER_NAME, chapterName);
-//    values.put(Constant.URL, url);
+//    values.put(Constant.CHAPTER_URL, url);
 //    values.put(Constant.NEXT_URL, nextUrl);
 //    values.put(Constant.PRE_URL, preUrl);
     public UrlBean getUrlCache(String url) {
@@ -155,14 +156,14 @@ public class CacheDao {
                 ", " +
                 Constant.CHAPTER_NAME +
                 ", " +
-                Constant.URL +
+                Constant.CHAPTER_URL +
                 ", " +
                 Constant.NEXT_URL +
                 ", " +
                 Constant.PRE_URL +
                 " from " + Constant.CHAPTER_TABLE + " where url = '" + url + "'", null);
         while (cursor.moveToNext()) {
-            list.add(new UrlBean(cursor.getString(0), cursor.getString(1), cursor.getString(2),cursor.getString(3), cursor.getString(4)));
+            list.add(new UrlBean(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4)));
         }
         cursor.close();
         database.close();
@@ -170,5 +171,29 @@ public class CacheDao {
         if (list.size() > 0)
             return list.get(0);
         else return null;
+    }
+
+    /**
+     * 添加到书架；
+     *
+     * @param detail
+     * @param bookUrl
+     * @param url
+     * @param nexturl
+     * @param preurl
+     */
+    public boolean addToBookSHELF(BookDetail detail, String bookUrl, String url, String nexturl, String preurl) {
+        boolean saved = false;
+        SQLiteDatabase database = helper.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(Constant.BOOK_NAME, detail.getBookName());
+        values.put(Constant.CHAPTER_NAME, "");
+        values.put(Constant.CHAPTER_URL, url);
+        values.put(Constant.NEXT_URL, nexturl);
+        values.put(Constant.PRE_URL, preurl);
+        long insert = database.insert(Constant.BOOKSHELF_TABLE, null, values);
+        database.close();
+        saved = true;
+        return saved;
     }
 }

@@ -25,7 +25,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 " VARCHAR, " +
                 Constant.CHAPTER_NAME +
                 " VARCHAR, " +
-                Constant.URL +
+                Constant.CHAPTER_URL +
                 " VARCHAR, " +
                 Constant.NEXT_URL +
                 " VARCHAR, " +
@@ -33,7 +33,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 " VARCHAR, " +
                 Constant.PATH +
                 " VARCHAR, UNIQUE(" +
-                Constant.URL +
+                Constant.CHAPTER_URL +
                 "))");
         //保存书架，书名，已读章节，
         db.execSQL("CREATE TABLE IF NOT EXISTS " +
@@ -43,7 +43,9 @@ public class DBHelper extends SQLiteOpenHelper {
                 " VARCHAR, " +
                 Constant.CHAPTER_NAME +
                 " VARCHAR, " +
-                Constant.URL +
+                Constant.BOOK_URL +
+                " VARCHAR, " +
+                Constant.CHAPTER_URL +
                 " VARCHAR, " +
                 Constant.NEXT_URL +
                 " VARCHAR, " +
@@ -51,7 +53,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 " VARCHAR, " +
                 Constant.PATH +
                 " VARCHAR, UNIQUE(" +
-                Constant.URL +
+                Constant.BOOK_NAME +
                 "))");
     }
 
@@ -66,7 +68,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = getWritableDatabase();
         ContentValues mContentValues = new ContentValues();
-        mContentValues.put(Constant.URL, path);
+        mContentValues.put(Constant.CHAPTER_URL, path);
 
         db.insert(CHAPTER_TABLE, "", mContentValues);
 

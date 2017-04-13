@@ -19,7 +19,8 @@ public class Constant {
     public static final String BOOKSHELF_TABLE ="bookshelf_table";
     public static final String TABLE_CHAPTER_LIST="chapter_list";
     public static String ID="id";
-    public static String URL ="url";
+    public static String CHAPTER_URL ="chapter_url";
+    public static String BOOK_URL ="book_url";
     public static String CHAPTER_NAME ="chapter_name";
     public static String BOOK_NAME ="book_name";
     public static String NEXT_URL ="next_url";
