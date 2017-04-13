@@ -35,6 +35,24 @@ public class DBHelper extends SQLiteOpenHelper {
                 " VARCHAR, UNIQUE(" +
                 Constant.URL +
                 "))");
+        //保存书架，书名，已读章节，
+        db.execSQL("CREATE TABLE IF NOT EXISTS " +
+                Constant.BOOKSHELF_TABLE +
+                "(_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                Constant.BOOK_NAME +
+                " VARCHAR, " +
+                Constant.CHAPTER_NAME +
+                " VARCHAR, " +
+                Constant.URL +
+                " VARCHAR, " +
+                Constant.NEXT_URL +
+                " VARCHAR, " +
+                Constant.PRE_URL +
+                " VARCHAR, " +
+                Constant.PATH +
+                " VARCHAR, UNIQUE(" +
+                Constant.URL +
+                "))");
     }
 
     @Override

@@ -16,6 +16,7 @@ public class Constant {
     public static final int VERSION = 1;
     public static final String DBNAME = "book.db";
     public static final String CHAPTER_TABLE ="chapter_table";
+    public static final String BOOKSHELF_TABLE ="bookshelf_table";
     public static final String TABLE_CHAPTER_LIST="chapter_list";
     public static String ID="id";
     public static String URL ="url";

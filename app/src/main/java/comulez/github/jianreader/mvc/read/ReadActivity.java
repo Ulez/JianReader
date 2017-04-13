@@ -29,6 +29,7 @@ import comulez.github.jianreader.mvc.activity.ReadView;
 import comulez.github.jianreader.mvc.bean.UrlBean;
 import comulez.github.jianreader.mvp.utils.CacheManager;
 import comulez.github.jianreader.mvp.utils.NetWorkUtils;
+import comulez.github.jianreader.mvp.utils.Utils;
 
 import static comulez.github.jianreader.mvp.utils.CacheManager.getCacheManager;
 
@@ -77,6 +78,8 @@ public class ReadActivity extends BaseActivity implements View.OnClickListener, 
         };
         url = getIntent().getStringExtra(Constant.PART_URL);
         bookName = getIntent().getStringExtra(Constant.BOOK_NAME);
+        Utils.i(url);
+        Utils.i(bookName);
 
         webView = (ReadView) findViewById(R.id.wb_read);
         tv_name = (TextView) findViewById(R.id.tv_name);

@@ -51,6 +51,7 @@
         android:textColor="@android:color/white"
         android:textSize="8sp"
         android:transitionName="author" />
+
     <TextView
         android:id="@+id/tv_status"
         android:layout_width="wrap_content"
@@ -64,6 +65,7 @@
         android:textColor="@android:color/white"
         android:textSize="8sp"
         android:transitionName="author" />
+
     <TextView
         android:id="@+id/tv_lastChapter"
         android:layout_width="wrap_content"
@@ -106,8 +108,14 @@
         android:textSize="8sp"
         android:transitionName="author" />
 
-
-
+    <ImageView
+        android:id="@+id/iv_add"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:src="@drawable/add2"
+        android:layout_alignTop="@+id/tv_name"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="39dp" />
 
 
 </RelativeLayout>

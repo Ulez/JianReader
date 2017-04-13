@@ -38,6 +38,7 @@ import comulez.github.jianreader.mvc.adapter.OnItemClickListener;
 import comulez.github.jianreader.mvc.bean.BookDetail;
 import comulez.github.jianreader.mvc.bean.Chapter;
 import comulez.github.jianreader.mvc.read.ReadActivity;
+import comulez.github.jianreader.mvp.utils.Utils;
 
 public class ChapterListActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener {
 
@@ -70,6 +71,9 @@ public class ChapterListActivity extends BaseActivity implements Toolbar.OnMenuI
     private TextView tvLastChapter;
     private TextView tvLastupdate;
     private ChapterAdapter chapterAdapter;
+    private ImageView ivAdd;
+    private boolean added = false;
+    private boolean gotDetail = false;
 
     @Override
     public int getResId() {
@@ -84,6 +88,7 @@ public class ChapterListActivity extends BaseActivity implements Toolbar.OnMenuI
         recyclerView = (RecyclerView) findViewById(R.id.rv_chapters);
         fb = (FloatingActionButton) findViewById(R.id.fb);
         ivCover = (ImageView) findViewById(R.id.iv_cover);
+        ivAdd = (ImageView) findViewById(R.id.iv_add);
         tvName = (TextView) findViewById(R.id.tv_name);
         tvAuthor = (TextView) findViewById(R.id.tv_author);
 
@@ -162,6 +167,22 @@ public class ChapterListActivity extends BaseActivity implements Toolbar.OnMenuI
             ivCover.setImageResource(R.drawable.progressloading);
         }
         executor.execute(getTask(originUrl));
+        ivAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (gotDetail) {
+                    if (!added) {
+                        Utils.t(R.string.add);
+                        ivAdd.setImageResource(R.drawable.had);
+                        //                CacheDao.getmInstance().addToBook(tvName,originUrl,nextUrl,);
+                    } else {
+                        Utils.t(R.string.remove);
+                        ivAdd.setImageResource(R.drawable.add2);
+                    }
+                    added = !added;
+                }
+            }
+        });
     }
 
     private void setToobar(AppBarLayout appBarLayout, int verticalOffset) {
@@ -272,6 +293,7 @@ public class ChapterListActivity extends BaseActivity implements Toolbar.OnMenuI
     }
 
     private void setDetails() {
+        gotDetail = true;
         tvName.setText(detail.getBookName());
         tvAuthor.setText(detail.getAuthor());
         tvLastChapter.setText(detail.getLatestChapter());

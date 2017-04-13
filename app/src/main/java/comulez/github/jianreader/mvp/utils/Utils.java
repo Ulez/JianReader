@@ -1,5 +1,6 @@
 package comulez.github.jianreader.mvp.utils;
 
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.Closeable;
@@ -16,7 +17,8 @@ import comulez.github.jianreader.mvp.MyApplication;
 
 
 public class Utils {
-    private static final String TAG="Utils";
+    private static final String TAG = "Utils";
+    public static final boolean Debug = true;
 
     public static void close(Closeable closeable) {
         try {
@@ -29,6 +31,7 @@ public class Utils {
 
     /**
      * MD5加密获取key;
+     *
      * @param url
      * @return
      */
@@ -56,10 +59,51 @@ public class Utils {
         return sb.toString();
     }
 
-    public static void t(String s){
-        Toast.makeText(MyApplication.getContext(),s,Toast.LENGTH_SHORT).show();
+    public static void t(String s) {
+        Toast.makeText(MyApplication.getContext(), s, Toast.LENGTH_SHORT).show();
     }
-    public static void t(int resId){
-        Toast.makeText(MyApplication.getContext(),MyApplication.getContext().getString(resId),Toast.LENGTH_SHORT).show();
+
+    public static void t(int resId) {
+        Toast.makeText(MyApplication.getContext(), MyApplication.getContext().getString(resId), Toast.LENGTH_SHORT).show();
+    }
+
+    public static void i(String s) {
+        if (Debug)
+            Log.i("lcy", s);
+    }
+
+    public static void i(String tag, String s) {
+        if (Debug)
+            Log.i(tag, s);
+    }
+
+    public static void e(String s) {
+        if (Debug)
+            Log.e("lcy", s);
+    }
+
+    public static void e(String tag, String s) {
+        if (Debug)
+            Log.e(tag, s);
+    }
+
+    public static void d(String s) {
+        if (Debug)
+            Log.d("lcy", s);
+    }
+
+    public static void d(String tag, String s) {
+        if (Debug)
+            Log.d(tag, s);
+    }
+
+    public static void w(String s) {
+        if (Debug)
+            Log.w("lcy", s);
+    }
+
+    public static void w(String tag, String s) {
+        if (Debug)
+            Log.w(tag, s);
     }
 }
