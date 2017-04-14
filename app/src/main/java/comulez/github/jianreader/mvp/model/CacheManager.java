@@ -1,9 +1,12 @@
-package comulez.github.jianreader.mvp.utils;
+package comulez.github.jianreader.mvp.model;
 
 import java.io.IOException;
 
 import comulez.github.jianreader.mvc.bean.UrlBean;
 import comulez.github.jianreader.mvp.MyApplication;
+import comulez.github.jianreader.mvp.utils.INovelCacahe;
+import comulez.github.jianreader.mvp.utils.NovelCache;
+import comulez.github.jianreader.mvp.utils.Utils;
 
 /**
  * Created by eado on 2017/3/24.

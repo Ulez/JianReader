@@ -38,7 +38,7 @@ import comulez.github.jianreader.mvc.adapter.OnItemClickListener;
 import comulez.github.jianreader.mvc.bean.BookDetail;
 import comulez.github.jianreader.mvc.bean.Chapter;
 import comulez.github.jianreader.mvc.read.ReadActivity;
-import comulez.github.jianreader.mvp.utils.CacheDao;
+import comulez.github.jianreader.mvp.model.CacheDao;
 import comulez.github.jianreader.mvp.utils.Utils;
 
 public class ChapterListActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener {
@@ -229,6 +229,7 @@ public class ChapterListActivity extends BaseActivity implements Toolbar.OnMenuI
 
     private Runnable getTask(final String url) {
         if (!url.contains("book")) { //http://m.23us.com/html/58/58177/
+            originUrl=url;
             getChapterTask = new Runnable() {
 
                 @Override

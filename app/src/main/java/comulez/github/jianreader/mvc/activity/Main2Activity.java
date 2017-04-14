@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import comulez.github.jianreader.R;
+import comulez.github.jianreader.mvp.bookshelfFragment.BookShelfFragment;
 import comulez.github.jianreader.mvp.homefragment.HomeFragment;
 
 public class Main2Activity extends BaseActivity
@@ -33,6 +34,7 @@ public class Main2Activity extends BaseActivity
     private FragmentManager fManager;
     private FragmentTransaction transaction;
     private HomeFragment homeFragment;
+    private BookShelfFragment bookShelfFragment;
     private ParentBooksFragment parentBooksFragment;
     private ParentBooksFragment parentCatelogFragment;
     private Fragment mCurrentFragment;
@@ -72,8 +74,8 @@ public class Main2Activity extends BaseActivity
             }
         };
         SparseArray a;
-        HashMap map=new HashMap();
-        HashSet set=new HashSet();
+        HashMap map = new HashMap();
+        HashSet set = new HashSet();
     }
 
     private boolean canExit = false;
@@ -154,7 +156,10 @@ public class Main2Activity extends BaseActivity
                 parentCatelogFragment = ParentBooksFragment.newInstance("http://m.23us.com/class/1_1.html", "");
             switchFragment(mCurrentFragment, parentCatelogFragment);
         } else if (id == R.id.book_store) {
-
+            getSupportActionBar().setTitle(getString(R.string.bookshelf));
+            if (bookShelfFragment == null)
+                bookShelfFragment = BookShelfFragment.newInstance("", "");
+            switchFragment(mCurrentFragment, bookShelfFragment);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {

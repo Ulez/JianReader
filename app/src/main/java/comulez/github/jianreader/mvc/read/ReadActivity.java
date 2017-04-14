@@ -27,11 +27,11 @@ import comulez.github.jianreader.mvc.activity.BaseActivity;
 import comulez.github.jianreader.mvc.activity.Constant;
 import comulez.github.jianreader.mvc.activity.ReadView;
 import comulez.github.jianreader.mvc.bean.UrlBean;
-import comulez.github.jianreader.mvp.utils.CacheManager;
+import comulez.github.jianreader.mvp.model.CacheManager;
 import comulez.github.jianreader.mvp.utils.NetWorkUtils;
 import comulez.github.jianreader.mvp.utils.Utils;
 
-import static comulez.github.jianreader.mvp.utils.CacheManager.getCacheManager;
+import static comulez.github.jianreader.mvp.model.CacheManager.getCacheManager;
 
 public class ReadActivity extends BaseActivity implements View.OnClickListener, MyScrollView.OnMove {
 

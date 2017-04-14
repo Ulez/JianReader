@@ -1,4 +1,4 @@
-package comulez.github.jianreader.mvp.utils;
+package comulez.github.jianreader.mvp.model;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -15,6 +15,7 @@ import comulez.github.jianreader.mvc.bean.BookDetail;
 import comulez.github.jianreader.mvc.bean.ReadBook;
 import comulez.github.jianreader.mvc.bean.UrlBean;
 import comulez.github.jianreader.mvp.MyApplication;
+import comulez.github.jianreader.mvp.utils.Utils;
 
 import static comulez.github.jianreader.mvc.activity.Constant.CHAPTER_TABLE;
 
@@ -162,7 +163,9 @@ public class CacheDao {
                 Constant.NEXT_URL +
                 ", " +
                 Constant.PRE_URL +
-                " from " + Constant.CHAPTER_TABLE + " where url = '" + url + "'", null);
+                " from " + Constant.CHAPTER_TABLE + " where " +
+                Constant.CHAPTER_URL +
+                " = '" + url + "'", null);
         while (cursor.moveToNext()) {
             list.add(new UrlBean(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4)));
         }

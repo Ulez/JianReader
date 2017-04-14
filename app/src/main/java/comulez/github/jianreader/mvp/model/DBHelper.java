@@ -1,4 +1,4 @@
-package comulez.github.jianreader.mvp.utils;
+package comulez.github.jianreader.mvp.model;
 
 import android.content.ContentValues;
 import android.content.Context;

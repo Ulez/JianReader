@@ -15,7 +15,7 @@ import java.util.Collections;
 
 import comulez.github.jianreader.R;
 import comulez.github.jianreader.mvc.bean.Chapter;
-import comulez.github.jianreader.mvp.utils.CacheManager;
+import comulez.github.jianreader.mvp.model.CacheManager;
 import comulez.github.jianreader.mvp.utils.Utils;
 
 /**
