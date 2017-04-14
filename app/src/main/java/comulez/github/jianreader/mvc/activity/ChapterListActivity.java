@@ -158,9 +158,9 @@ public class ChapterListActivity extends BaseActivity implements Toolbar.OnMenuI
         };
         executor = Executors.newSingleThreadExecutor();
         originUrl = getIntent().getStringExtra(Constant.PART_URL);
-        if (!TextUtils.isEmpty(getIntent().getStringExtra(Constant.Cover_URL))) {
+        if (!TextUtils.isEmpty(getIntent().getStringExtra(Constant.COVER_URL))) {
             Picasso.with(this)
-                    .load(getIntent().getStringExtra(Constant.Cover_URL))
+                    .load(getIntent().getStringExtra(Constant.COVER_URL))
                     .error(R.drawable.defaultmin)
                     .fit()
                     .centerCrop()
@@ -173,13 +173,14 @@ public class ChapterListActivity extends BaseActivity implements Toolbar.OnMenuI
             @Override
             public void onClick(View v) {
                 if (gotDetail) {
-                    if (!added) {
+                    if (!added && CacheDao.getmInstance().addToBookSHELF(detail, "", bookUrl, "", "", "")) {
                         Utils.t(R.string.add);
                         ivAdd.setImageResource(R.drawable.had);
-                        //                CacheDao.getmInstance().addToBook(tvName,originUrl,nextUrl,);
                     } else {
-                        Utils.t(R.string.remove);
-                        ivAdd.setImageResource(R.drawable.add2);
+                        if (CacheDao.getmInstance().removeBook(bookUrl)) {
+                            Utils.t(R.string.remove);
+                            ivAdd.setImageResource(R.drawable.add2);
+                        }
                     }
                     added = !added;
                 }
@@ -297,6 +298,12 @@ public class ChapterListActivity extends BaseActivity implements Toolbar.OnMenuI
 
     private void setDetails() {
         gotDetail = true;
+        added = CacheDao.getmInstance().getAdded(bookUrl);
+        if (added) {
+            ivAdd.setImageResource(R.drawable.had);
+        } else {
+            ivAdd.setImageResource(R.drawable.add2);
+        }
         tvName.setText(detail.getBookName());
         tvAuthor.setText(detail.getAuthor());
         tvLastChapter.setText(detail.getLatestChapter());
@@ -308,7 +315,7 @@ public class ChapterListActivity extends BaseActivity implements Toolbar.OnMenuI
         wvDec.loadDataWithBaseURL("about:blank", "<font color='white'>" + detail.getIntro(), "text/html", "utf-8", null);
         wvDec.getSettings().setTextZoom(40);
         wvDec.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        if (TextUtils.isEmpty(getIntent().getStringExtra(Constant.Cover_URL))) {
+        if (TextUtils.isEmpty(getIntent().getStringExtra(Constant.COVER_URL))) {
             Picasso.with(this)
                     .load(detail.getImage_cover())
                     .error(R.drawable.defaultmin)

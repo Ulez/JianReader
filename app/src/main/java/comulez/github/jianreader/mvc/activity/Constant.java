@@ -8,7 +8,7 @@ package comulez.github.jianreader.mvc.activity;
 public class Constant {
     public static final String PART_URL="part_url";
     public static final String QUERY="query";
-    public static final String Cover_URL="cover_url";
+    public static final String COVER_URL ="cover_url";
     public static final int  status_loading=1;
     public static final int  status_end=2;
     public static final int  status_no_data=3;
@@ -23,8 +23,13 @@ public class Constant {
     public static String BOOK_URL ="book_url";
     public static String CHAPTER_NAME ="chapter_name";
     public static String BOOK_NAME ="book_name";
+    public static String BOOK_STATUS ="book_status";
     public static String NEXT_URL ="next_url";
     public static String PRE_URL ="pre_url";
     public static String PATH ="path";
     public static String SAVE_TIME ="save_time";
+    public static String AUTHOR ="author";
+    public static String UPDATE="updatetime";
+    public static String lastChapter="lastChapter";
+    public static String latestUrl="latestUrl";
 }

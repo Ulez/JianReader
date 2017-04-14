@@ -12,6 +12,7 @@ import java.util.List;
 
 import comulez.github.jianreader.mvc.activity.Constant;
 import comulez.github.jianreader.mvc.bean.BookDetail;
+import comulez.github.jianreader.mvc.bean.ReadBook;
 import comulez.github.jianreader.mvc.bean.UrlBean;
 import comulez.github.jianreader.mvp.MyApplication;
 
@@ -177,23 +178,102 @@ public class CacheDao {
      * 添加到书架；
      *
      * @param detail
+     * @param chapterName
      * @param bookUrl
      * @param url
      * @param nexturl
      * @param preurl
      */
-    public boolean addToBookSHELF(BookDetail detail, String bookUrl, String url, String nexturl, String preurl) {
+    public boolean addToBookSHELF(BookDetail detail, String chapterName, String bookUrl, String url, String nexturl, String preurl) {
         boolean saved = false;
         SQLiteDatabase database = helper.getReadableDatabase();
         ContentValues values = new ContentValues();
         values.put(Constant.BOOK_NAME, detail.getBookName());
-        values.put(Constant.CHAPTER_NAME, "");
+        values.put(Constant.CHAPTER_NAME, chapterName);
+        values.put(Constant.BOOK_URL, bookUrl);
         values.put(Constant.CHAPTER_URL, url);
         values.put(Constant.NEXT_URL, nexturl);
         values.put(Constant.PRE_URL, preurl);
+        values.put(Constant.BOOK_STATUS, detail.getStatus());
+        values.put(Constant.COVER_URL, detail.getImage_cover());
+        values.put(Constant.AUTHOR, detail.getAuthor());
+        values.put(Constant.UPDATE, detail.getUp_date());
+        values.put(Constant.lastChapter, detail.getLatestChapter());
+        values.put(Constant.latestUrl, detail.getLatestUrl());
         long insert = database.insert(Constant.BOOKSHELF_TABLE, null, values);
         database.close();
         saved = true;
         return saved;
+    }
+
+
+    public ArrayList<ReadBook> getBookShelf() {//返回所有的书架；
+        ArrayList<ReadBook> list = new ArrayList<>();
+        SQLiteDatabase database = helper.getReadableDatabase();
+        Cursor cursor = database.rawQuery(
+                "select " + Constant.BOOK_NAME + "," + Constant.BOOK_URL + "," + Constant.AUTHOR + "," + Constant.BOOK_STATUS + "," + Constant.UPDATE + "," + Constant.lastChapter + "," + Constant.latestUrl + "," + Constant.COVER_URL + "," + Constant.CHAPTER_NAME + "," + Constant.CHAPTER_URL + "," + Constant.NEXT_URL + "," + Constant.PRE_URL + " from " + Constant.BOOKSHELF_TABLE, null);
+//        ReadBook(String           bookName, String            bookUrl, String         author, String             status, String            up_date, String        latestChapter, String          latestUrl, String        image_cover, String          readChapter, String           chapterUrl, String           nextUrl, String           preUrl)
+        while (cursor.moveToNext()) {
+            list.add(new ReadBook(
+                    cursor.getString(0),
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getString(4),
+                    cursor.getString(5),
+                    cursor.getString(6),
+                    cursor.getString(7),
+                    cursor.getString(8),
+                    cursor.getString(9),
+                    cursor.getString(10),
+                    cursor.getString(11)));
+        }
+        cursor.close();
+        database.close();
+        Log.e(TAG, "list==" + list.toString());
+        return list;
+    }
+
+    public boolean updateReadChapter(BookDetail detail, String chapterName, String url, String nexturl, String preurl) {
+        boolean updated = false;
+        SQLiteDatabase database = helper.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(Constant.BOOK_NAME, detail.getBookName());
+        values.put(Constant.CHAPTER_NAME, chapterName);
+        values.put(Constant.CHAPTER_URL, url);
+        values.put(Constant.NEXT_URL, nexturl);
+        values.put(Constant.PRE_URL, preurl);
+        values.put(Constant.BOOK_STATUS, detail.getStatus());
+        values.put(Constant.COVER_URL, detail.getImage_cover());
+        values.put(Constant.AUTHOR, detail.getAuthor());
+        values.put(Constant.UPDATE, detail.getUp_date());
+        values.put(Constant.lastChapter, detail.getLatestChapter());
+        values.put(Constant.latestUrl, detail.getLatestUrl());
+        int result = database.update(Constant.BOOKSHELF_TABLE, values, Constant.BOOK_NAME + "=?", new String[]{detail.getBookName()});
+        Utils.d("更新=" + result);
+        database.close();
+        updated = true;
+        return updated;
+    }
+
+    public boolean removeBook(String bookUrl) {
+        boolean removed = false;
+        SQLiteDatabase database = helper.getReadableDatabase();
+        removed = database.delete(Constant.BOOKSHELF_TABLE, Constant.BOOK_URL + "=?", new String[]{bookUrl}) > 0;
+        database.close();
+        return removed;
+    }
+
+
+    public boolean getAdded(String bookUrl) {
+        int i = 0;
+        SQLiteDatabase database = helper.getReadableDatabase();
+        Cursor cursor = database.rawQuery("select * from " + Constant.BOOKSHELF_TABLE + " WHERE " + Constant.BOOK_URL + " ='" + bookUrl + "'", null);
+        while (cursor.moveToNext()) {
+            i++;
+        }
+        cursor.close();
+        database.close();
+        return i > 0 ? true : false;
     }
 }

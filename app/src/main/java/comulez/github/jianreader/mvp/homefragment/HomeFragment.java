@@ -96,7 +96,7 @@ public class HomeFragment extends Fragment implements HomeView {
         Intent intent = new Intent(activity, ChapterListActivity.class);
         intent.putExtra(Constant.PART_URL, book.getUrl());
         if (book.getType() == Book.Type_Hot) {
-            intent.putExtra(Constant.Cover_URL, book.getImage_url());
+            intent.putExtra(Constant.COVER_URL, book.getImage_url());
             ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, view.findViewById(R.id.iv_cover), ChapterListActivity.TRANSIT_IMG);
             ActivityCompat.startActivity(activity, intent, optionsCompat.toBundle());
         } else {
