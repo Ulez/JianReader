@@ -18,11 +18,9 @@ import comulez.github.jianreader.R;
 import comulez.github.jianreader.mvc.activity.BaseActivity;
 import comulez.github.jianreader.mvc.activity.ChapterListActivity;
 import comulez.github.jianreader.mvc.activity.Constant;
-import comulez.github.jianreader.mvc.adapter.BaseAniAdapter;
-import comulez.github.jianreader.mvc.adapter.BookShelfAdapter;
-import comulez.github.jianreader.mvc.adapter.OnItemClickListener;
+import comulez.github.jianreader.mvc.adapter.SimpleAdapter;
 import comulez.github.jianreader.mvc.bean.ReadBook;
-import comulez.github.jianreader.mvp.EmptyLayout;
+import comulez.github.jianreader.mvp.utils.Utils;
 
 
 public class BookShelfFragment extends Fragment implements BookShelfView {
@@ -34,7 +32,7 @@ public class BookShelfFragment extends Fragment implements BookShelfView {
     private String TAG = "BookShelfFragment";
     private ArrayList<ReadBook> books = new ArrayList<>();
     private ArrayList<ReadBook> fenglei = new ArrayList<>();
-    private BookShelfAdapter shelfAdapter;
+    private SimpleAdapter shelfAdapter;
     private BaseActivity activity;
     private ShelfPresenter presenter;
 
@@ -71,16 +69,43 @@ public class BookShelfFragment extends Fragment implements BookShelfView {
 
     public void loadData() {
         rvBooks.setLayoutManager(new LinearLayoutManager(activity));
-        shelfAdapter = new BookShelfAdapter(activity, books);
+//        shelfAdapter = new BookShelfAdapter(activity, books);
+        shelfAdapter = new SimpleAdapter<ReadBook, SimpleAdapter.BaseHolder>(R.layout.item_hot_book) {
+
+            @Override
+            protected void convert(BaseHolder holder, ReadBook item, final int position) {
+                holder.setText(R.id.tv_author, item.getAuthor());
+                holder.setText(R.id.tv_name, item.getBookName());
+                holder.setImageByPicasso(R.id.iv_cover, item.getImage_cover());
+                holder.setOnClickListener(R.id.tv_author, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Utils.t("R.id.tv_author点击监听"+mDatas.get(position).getAuthor());
+                    }
+                });
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startChapterActivity(v, position, mDatas.get(position));
+//                        Utils.t("简单的adapter点击监听"+mDatas.get(position).getAuthor());
+                    }
+                });
+            }
+
+            @Override
+            protected int getLayoutId(int viewType) {
+                return R.layout.item_hot_book;
+            }
+        };
         rvBooks.setAdapter(shelfAdapter);
         rvBooks.setItemAnimator(new DefaultItemAnimator());
-        shelfAdapter.setAniType(BaseAniAdapter.ANI_LEFT_IN, 500);
-        shelfAdapter.setOnItemClickListener(new OnItemClickListener<ReadBook>() {
-            @Override
-            public void onItemClick(View view, int pos, ReadBook book) {
-                startChapterActivity(view, pos, book);
-            }
-        });
+//        shelfAdapter.setAniType(BaseAniAdapter.ANI_LEFT_IN, 500);
+//        shelfAdapter.setOnItemClickListener(new OnItemClickListener<ReadBook>() {
+//            @Override
+//            public void onItemClick(View view, int pos, ReadBook book) {
+//                startChapterActivity(view, pos, book);
+//            }
+//        });
         presenter = new ShelfPresenter();
         presenter.addTaskListener(this);
         presenter.getAllRead();
@@ -96,20 +121,20 @@ public class BookShelfFragment extends Fragment implements BookShelfView {
 
     @Override
     public void showList(ArrayList<ReadBook> books) {
-        shelfAdapter.setData(books);
+        shelfAdapter.setNewData(books);
     }
 
     @Override
     public void onError(Throwable e, int Status) {
         switch (Status) {
             case Constant.status_loading:
-                shelfAdapter.setEmptyView(R.layout.em_layout, EmptyLayout.NETWORK_LOADING);
+//                shelfAdapter.setEmptyView(R.layout.em_layout, EmptyLayout.NETWORK_LOADING);
                 break;
             case Constant.status_no_data:
-                shelfAdapter.setEmptyView(R.layout.em_layout, EmptyLayout.NODATA);
+//                shelfAdapter.setEmptyView(R.layout.em_layout, EmptyLayout.NODATA);
                 break;
             default:
-                shelfAdapter.setEmptyView(R.layout.em_layout, EmptyLayout.HIDE_LAYOUT);
+//                shelfAdapter.setEmptyView(R.layout.em_layout, EmptyLayout.HIDE_LAYOUT);
                 break;
         }
     }
