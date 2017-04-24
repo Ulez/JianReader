@@ -20,6 +20,7 @@ import comulez.github.jianreader.mvc.activity.ChapterListActivity;
 import comulez.github.jianreader.mvc.activity.Constant;
 import comulez.github.jianreader.mvc.adapter.SimpleAdapter;
 import comulez.github.jianreader.mvc.bean.ReadBook;
+import comulez.github.jianreader.mvc.adapter.BaseHolder;
 import comulez.github.jianreader.mvp.utils.Utils;
 
 
@@ -70,7 +71,7 @@ public class BookShelfFragment extends Fragment implements BookShelfView {
     public void loadData() {
         rvBooks.setLayoutManager(new LinearLayoutManager(activity));
 //        shelfAdapter = new BookShelfAdapter(activity, books);
-        shelfAdapter = new SimpleAdapter<ReadBook, SimpleAdapter.BaseHolder>(R.layout.item_hot_book) {
+        shelfAdapter = new SimpleAdapter<ReadBook, BaseHolder>(R.layout.item_hot_book) {
 
             @Override
             protected void convert(BaseHolder holder, ReadBook item, final int position) {
