@@ -15,6 +15,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="catelog">分类</string>
     <string name="bookshelf">书架</string>
+    <string name="loaded_all">已加载全部</string>
     <!-- Error View -->
     <string name="error_view_click_to_refresh">点击屏幕,重新加载</string>
     <string name="error_view_no_data">暂无内容</string>

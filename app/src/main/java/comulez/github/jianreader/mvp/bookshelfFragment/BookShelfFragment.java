@@ -18,9 +18,10 @@ import comulez.github.jianreader.R;
 import comulez.github.jianreader.mvc.activity.BaseActivity;
 import comulez.github.jianreader.mvc.activity.ChapterListActivity;
 import comulez.github.jianreader.mvc.activity.Constant;
-import comulez.github.jianreader.mvc.adapter.SimpleAdapter;
-import comulez.github.jianreader.mvc.bean.ReadBook;
 import comulez.github.jianreader.mvc.adapter.BaseHolder;
+import comulez.github.jianreader.mvc.adapter.SimpleAdapter;
+import comulez.github.jianreader.mvc.adapter.SimpleAdapterWrapper;
+import comulez.github.jianreader.mvc.bean.ReadBook;
 import comulez.github.jianreader.mvp.utils.Utils;
 
 
@@ -67,6 +68,7 @@ public class BookShelfFragment extends Fragment implements BookShelfView {
         return rvBooks;
     }
 
+    SimpleAdapterWrapper wrapper;
 
     public void loadData() {
         rvBooks.setLayoutManager(new LinearLayoutManager(activity));
@@ -81,7 +83,7 @@ public class BookShelfFragment extends Fragment implements BookShelfView {
                 holder.setOnClickListener(R.id.tv_author, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Utils.t("R.id.tv_author点击监听"+mDatas.get(position).getAuthor());
+                        Utils.t("R.id.tv_author点击监听" + mDatas.get(position).getAuthor());
                     }
                 });
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +100,12 @@ public class BookShelfFragment extends Fragment implements BookShelfView {
                 return R.layout.item_hot_book;
             }
         };
-        rvBooks.setAdapter(shelfAdapter);
+        wrapper = new SimpleAdapterWrapper(shelfAdapter);
+        View headerView = LayoutInflater.from(getContext()).inflate(R.layout.item_header, rvBooks, false);
+        View footerView = LayoutInflater.from(getContext()).inflate(R.layout.item_footer, rvBooks, false);
+        wrapper.setHeaderView(headerView);
+        wrapper.setFooterView(footerView);
+        rvBooks.setAdapter(wrapper);
         rvBooks.setItemAnimator(new DefaultItemAnimator());
 //        shelfAdapter.setAniType(BaseAniAdapter.ANI_LEFT_IN, 500);
 //        shelfAdapter.setOnItemClickListener(new OnItemClickListener<ReadBook>() {
@@ -122,7 +129,7 @@ public class BookShelfFragment extends Fragment implements BookShelfView {
 
     @Override
     public void showList(ArrayList<ReadBook> books) {
-        shelfAdapter.setNewData(books);
+        wrapper.setNewData(books);
     }
 
     @Override
