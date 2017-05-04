@@ -1,9 +1,7 @@
 package comulez.github.jianreader.mvc.read;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
@@ -19,7 +17,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 
 import comulez.github.jianreader.R;
 import comulez.github.jianreader.mvc.activity.Api;
@@ -27,6 +24,7 @@ import comulez.github.jianreader.mvc.activity.BaseActivity;
 import comulez.github.jianreader.mvc.activity.Constant;
 import comulez.github.jianreader.mvc.activity.ReadView;
 import comulez.github.jianreader.mvc.bean.UrlBean;
+import comulez.github.jianreader.mvp.MyHandler;
 import comulez.github.jianreader.mvp.model.CacheManager;
 import comulez.github.jianreader.mvp.utils.NetWorkUtils;
 import comulez.github.jianreader.mvp.utils.Utils;
@@ -44,7 +42,7 @@ public class ReadActivity extends BaseActivity implements View.OnClickListener, 
     private TextView tv_night;
 
     MyScrollView scrollView;
-    private Handler handler;
+    private MyHandler handler;
     private String content;
     private String name;
     private String pre_url;
@@ -130,6 +128,17 @@ public class ReadActivity extends BaseActivity implements View.OnClickListener, 
                 pre_url = urlBean.getPre_url();
                 next_url = urlBean.getNext_url();
                 name = urlBean.getChapterName();
+                if (TextUtils.isEmpty(CacheManager.getCacheManager().getChapterContent(next_url)))
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                getData(next_url, true);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
             }
             handler.sendEmptyMessage(1);
         }
@@ -142,15 +151,16 @@ public class ReadActivity extends BaseActivity implements View.OnClickListener, 
         Elements title = doc.select("div.content");
         Element prEle = title.select("li.mulu").first();
         Elements nextEle = title.select("li.next");
-        if (!isPre) {
+        if (!isPre) {//非预读
             pre_url = Api.base_url + prEle.select("a").first().attr("href");
             next_url = Api.base_url + nextEle.select("a").first().attr("href");
             name = title.select("h1").first().text();
             content = elements.toString();
             CacheManager.getCacheManager().saveChapterCache(url, next_url, pre_url, content, name, bookName);
             handler.sendEmptyMessage(1);
-            getData(next_url, true);
-        } else {//只是预读；
+            if (TextUtils.isEmpty(CacheManager.getCacheManager().getChapterContent(next_url)))
+                getData(next_url, true);
+        } else {//预读；
             String pre_url = Api.base_url + prEle.select("a").first().attr("href");
             String next_url = Api.base_url + nextEle.select("a").first().attr("href");
             String name = title.select("h1").first().text();
@@ -262,26 +272,6 @@ public class ReadActivity extends BaseActivity implements View.OnClickListener, 
         if (handler != null) {
             handler.removeCallbacksAndMessages(null);
             handler = null;
-        }
-    }
-
-    private static class MyHandler extends Handler {
-        private WeakReference<Context> reference;
-
-        public MyHandler(Context context) {
-            reference = new WeakReference<>(context);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            ReadActivity activity = (ReadActivity) reference.get();
-            if (activity != null) {
-                handleMessage2(msg);
-            }
-        }
-
-        public void handleMessage2(Message msg) {
-
         }
     }
 }
