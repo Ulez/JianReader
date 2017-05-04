@@ -67,13 +67,6 @@ public class ReadActivity extends BaseActivity implements View.OnClickListener, 
                 tv_name.setText(name);
                 scrollView.scrollTo(0, 0);
                 clickAble = true;
-                switch (msg.what) {
-                    case 1:
-                        break;
-                    case 2:
-                        CacheManager.getCacheManager().saveChapterCache(url, next_url, pre_url, content, name, bookName);
-                        break;
-                }
             }
         };
         url = getIntent().getStringExtra(Constant.PART_URL);
@@ -120,7 +113,7 @@ public class ReadActivity extends BaseActivity implements View.OnClickListener, 
                     @Override
                     public void run() {
                         try {
-                            getData(url);
+                            getData(url, false);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -141,18 +134,29 @@ public class ReadActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
-    private void getData(String url) throws IOException {
+    private void getData(String url, boolean isPre) throws IOException {
         Log.e(TAG, url);
         Document doc = Jsoup.connect(url).get();
         Elements elements = doc.select("div.txt");
         Elements title = doc.select("div.content");
         Element prEle = title.select("li.mulu").first();
         Elements nextEle = title.select("li.next");
-        pre_url = Api.base_url + prEle.select("a").first().attr("href");
-        next_url = Api.base_url + nextEle.select("a").first().attr("href");
-        name = title.select("h1").first().text();
-        content = elements.toString();
-        handler.sendEmptyMessage(2);
+        if (!isPre) {
+            pre_url = Api.base_url + prEle.select("a").first().attr("href");
+            next_url = Api.base_url + nextEle.select("a").first().attr("href");
+            name = title.select("h1").first().text();
+            content = elements.toString();
+            CacheManager.getCacheManager().saveChapterCache(url, next_url, pre_url, content, name, bookName);
+            handler.sendEmptyMessage(1);
+            getData(next_url, true);
+        } else {//只是预读；
+            String pre_url = Api.base_url + prEle.select("a").first().attr("href");
+            String next_url = Api.base_url + nextEle.select("a").first().attr("href");
+            String name = title.select("h1").first().text();
+            String content = elements.toString();
+            CacheManager.getCacheManager().saveChapterCache(url, next_url, pre_url, content, name, bookName);
+            handler.sendEmptyMessage(1);
+        }
     }
 
     @Override
