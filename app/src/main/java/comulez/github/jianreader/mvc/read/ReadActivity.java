@@ -121,6 +121,7 @@ public class ReadActivity extends BaseActivity implements View.OnClickListener, 
                 }).start();
             else {
                 Toast.makeText(this, "无网络连接", Toast.LENGTH_SHORT).show();
+                clickAble = true;
                 return;
             }
         } else {
