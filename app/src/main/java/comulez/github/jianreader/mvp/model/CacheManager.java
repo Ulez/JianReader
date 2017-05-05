@@ -8,6 +8,8 @@ import comulez.github.jianreader.mvp.utils.INovelCacahe;
 import comulez.github.jianreader.mvp.utils.NovelCache;
 import comulez.github.jianreader.mvp.utils.Utils;
 
+import static comulez.github.jianreader.mvp.model.CacheDao.getmInstance;
+
 /**
  * Created by eado on 2017/3/24.
  */
@@ -31,7 +33,7 @@ public class CacheManager {
     }
 
     private CacheManager() {
-        cacheDao = CacheDao.getmInstance();
+        cacheDao = getmInstance();
         novelCacahe = new NovelCache(MyApplication.getContext());
     }
 
@@ -56,5 +58,10 @@ public class CacheManager {
 
     public UrlBean getUrlNear(String url) {
         return cacheDao.getUrlCache(url);
+    }
+
+    public void saveReadProgess(String chapterUrl, String bookName) {
+        boolean updated = CacheDao.getmInstance().updateProgress(chapterUrl, bookName);
+        Utils.e("updated=" + updated);
     }
 }

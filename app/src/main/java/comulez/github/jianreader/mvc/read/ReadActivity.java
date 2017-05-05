@@ -65,6 +65,7 @@ public class ReadActivity extends BaseActivity implements View.OnClickListener, 
                 tv_name.setText(name);
                 scrollView.scrollTo(0, 0);
                 clickAble = true;
+                CacheManager.getCacheManager().saveReadProgess(url,bookName);
             }
         };
         url = getIntent().getStringExtra(Constant.PART_URL);

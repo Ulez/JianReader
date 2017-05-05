@@ -209,6 +209,18 @@ public class CacheDao {
         return saved;
     }
 
+    public boolean updateProgress(String chapterUrl, String bookName) {
+        boolean saved = false;
+        SQLiteDatabase database = helper.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(Constant.BOOK_NAME, bookName);
+        values.put(Constant.CHAPTER_URL, chapterUrl);
+        database.update(Constant.BOOKSHELF_TABLE, values, Constant.BOOK_NAME + "=?", new String[]{bookName});
+        database.close();
+        saved = true;
+        return saved;
+    }
+
 
     public ArrayList<ReadBook> getBookShelf() {//返回所有的书架；
         ArrayList<ReadBook> list = new ArrayList<>();

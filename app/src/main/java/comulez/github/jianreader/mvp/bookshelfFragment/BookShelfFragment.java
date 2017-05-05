@@ -108,6 +108,7 @@ public class BookShelfFragment extends Fragment implements BookShelfView {
         rvBooks.setAdapter(wrapper);
         rvBooks.setItemAnimator(new DefaultItemAnimator());
 //        shelfAdapter.setAniType(BaseAniAdapter.ANI_LEFT_IN, 500);
+        // TODO: 2017/5/5  
 //        shelfAdapter.setOnItemClickListener(new OnItemClickListener<ReadBook>() {
 //            @Override
 //            public void onItemClick(View view, int pos, ReadBook book) {

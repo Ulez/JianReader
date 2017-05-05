@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -16,7 +15,6 @@ import java.util.Collections;
 import comulez.github.jianreader.R;
 import comulez.github.jianreader.mvc.bean.Chapter;
 import comulez.github.jianreader.mvp.model.CacheManager;
-import comulez.github.jianreader.mvp.utils.Utils;
 
 /**
  * Created by Ulez on 2017/2/25.
@@ -55,13 +53,12 @@ public class ChapterAdapter extends BaseAniAdapter<ChapterAdapter.ChapterHolder>
 
     @Override
     public void onBindViewHolder(ChapterHolder holder, int position) {
-        holder.textView.setText(chapterList.get(position).getName());
-        Log.e(TAG, "url:" + originUrl + chapterList.get(position).getUrl());
         if (TextUtils.isEmpty(CacheManager.getCacheManager().getChapterContent(originUrl + chapterList.get(position).getUrl()))) {
-            holder.imageView.setImageResource(R.drawable.nocache);
+            holder.textView.setTextColor(context.getResources().getColor(R.color.md_grey_500));
         } else {
-            holder.imageView.setImageResource(R.drawable.hascache);
+            holder.textView.setTextColor(context.getResources().getColor(R.color.md_black));
         }
+        holder.textView.setText(chapterList.get(position).getName());
     }
 
     @Override
@@ -76,13 +73,13 @@ public class ChapterAdapter extends BaseAniAdapter<ChapterAdapter.ChapterHolder>
 
     public class ChapterHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         public TextView textView;
-        public ImageView imageView;
+//        public ImageView imageView;
 
         public ChapterHolder(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.tv_book_name);
-            imageView = (ImageView) itemView.findViewById(R.id.iv_cache);
-            imageView.setOnClickListener(this);
+//            imageView = (ImageView) itemView.findViewById(R.id.iv_cache);
+//            imageView.setOnClickListener(this);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }
@@ -90,9 +87,7 @@ public class ChapterAdapter extends BaseAniAdapter<ChapterAdapter.ChapterHolder>
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.iv_cache:
-                    Utils.t("缓存xxsfsdfsf");
-                    return;
+
             }
             if (onItemClickListener != null)
                 onItemClickListener.onItemClick(v, getAdapterPosition(), chapterList.get(getAdapterPosition()));
