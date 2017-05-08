@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import comulez.github.jianreader.BuildConfig;
 import comulez.github.jianreader.mvp.MyApplication;
 
 /**
@@ -18,7 +19,7 @@ import comulez.github.jianreader.mvp.MyApplication;
 
 public class Utils {
     private static final String TAG = "Utils";
-    public static final boolean Debug = true;
+    public static final boolean Debug = BuildConfig.DEBUG;
 
     public static void close(Closeable closeable) {
         try {
