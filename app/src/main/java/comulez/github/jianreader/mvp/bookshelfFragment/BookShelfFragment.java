@@ -12,12 +12,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 
 import comulez.github.jianreader.R;
 import comulez.github.jianreader.mvc.activity.BaseActivity;
 import comulez.github.jianreader.mvc.activity.ChapterListActivity;
 import comulez.github.jianreader.mvc.activity.Constant;
+import comulez.github.jianreader.mvc.activity.StatusBean;
 import comulez.github.jianreader.mvc.adapter.BaseHolder;
 import comulez.github.jianreader.mvc.adapter.SimpleAdapter;
 import comulez.github.jianreader.mvc.adapter.SimpleAdapterWrapper;
@@ -55,10 +59,17 @@ public class BookShelfFragment extends Fragment implements BookShelfView {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = (BaseActivity) getActivity();
+        EventBus.getDefault().register(this);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+    }
+
+    @Subscribe
+    public void onMessageEvent(StatusBean change) {
+        if (getString(R.string.update_shelf).equals(change.getStatus()))
+            loadData();
     }
 
     @Override
@@ -131,6 +142,12 @@ public class BookShelfFragment extends Fragment implements BookShelfView {
     @Override
     public void showList(ArrayList<ReadBook> books) {
         wrapper.setNewData(books);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override

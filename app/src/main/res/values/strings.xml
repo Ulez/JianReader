@@ -114,4 +114,5 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="back">返回</string>
+    <string name="update_shelf">update_shelf</string>
 </resources>

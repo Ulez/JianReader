@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import org.greenrobot.eventbus.EventBus;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -173,6 +174,7 @@ public class ChapterListActivity extends BaseActivity implements Toolbar.OnMenuI
             @Override
             public void onClick(View v) {
                 if (gotDetail) {
+                    EventBus.getDefault().post(new StatusBean(getString(R.string.update_shelf)));
                     if (!added && CacheDao.getmInstance().addToBookSHELF(detail, "", bookUrl, "", "", "")) {
                         Utils.t(R.string.add);
                         ivAdd.setImageResource(R.drawable.had);

@@ -16,8 +16,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
-
 import comulez.github.jianreader.R;
 import comulez.github.jianreader.mvc.activity.Api;
 import comulez.github.jianreader.mvc.activity.BaseActivity;
@@ -65,7 +63,7 @@ public class ReadActivity extends BaseActivity implements View.OnClickListener, 
                 tv_name.setText(name);
                 scrollView.scrollTo(0, 0);
                 clickAble = true;
-                CacheManager.getCacheManager().saveReadProgess(url,bookName);
+                CacheManager.getCacheManager().saveReadProgess(url, bookName);
             }
         };
         url = getIntent().getStringExtra(Constant.PART_URL);
@@ -113,7 +111,7 @@ public class ReadActivity extends BaseActivity implements View.OnClickListener, 
                     public void run() {
                         try {
                             getData(url, false);
-                        } catch (IOException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
@@ -135,7 +133,7 @@ public class ReadActivity extends BaseActivity implements View.OnClickListener, 
                         public void run() {
                             try {
                                 getData(next_url, true);
-                            } catch (IOException e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
@@ -145,7 +143,7 @@ public class ReadActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
-    private void getData(String url, boolean isPre) throws IOException {
+    private void getData(String url, boolean isPre) throws Exception {
         Log.e(TAG, url);
         Document doc = Jsoup.connect(url).get();
         Elements elements = doc.select("div.txt");
